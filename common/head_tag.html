@@ -8,10 +8,8 @@
     <header class="header-main">
       <div class="header-container">
         <div class="mobile-nav-left">
-          <button class="mobile-main-menu-toggle" data-main-burger title="Main Menu">
-            <span class="burger-line"></span>
-            <span class="burger-line"></span>
-            <span class="burger-line"></span>
+          <button class="btn btn-flat btn-sidebar-toggle no-text btn-icon" title="Toggle Sidebar">
+            <svg class="fa d-icon d-icon-bars svg-icon svg-node" aria-hidden="true"><use href="#bars"></use></svg>
           </button>
         </div>
 
@@ -60,21 +58,6 @@
       </div>
     </header>
 
-    <!-- Mobile Main Menu Overlay (Left) -->
-    <div class="mobile-main-overlay" data-main-mobile-nav>
-      <div class="mobile-main-content">
-        <nav class="mobile-main-navigation">
-          <ul class="mobile-main-menu">
-            <li><a href="https://www.plcnext-community.net/infocenter/news">News & Articles</a></li>
-            <li><a href="https://www.plcnext-community.net/about-plcnext-technology">About PLCnext Technology</a></li>
-            <li><a href="https://www.plcnext-community.net/learning">Learning</a></li>
-            <li><a href="https://www.plcnext-community.net/makers-blog">Maker's Blog</a></li>
-            <li><a href="/">Forum</a></li>
-            <li><a href="https://www.plcnext-community.net/getting-started-with-plcnext-technology/#learn-more">Getting started</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
 
     <!-- Mobile User Menu Overlay (Right) -->
     <div class="mobile-overlay" data-mobile-nav>
@@ -117,33 +100,41 @@ function initializePLCNextHeader() {
     const menuWrapper = document.querySelector('[data-menu-wrapper]');
     if (!menuWrapper) return;
 
-    const mobileMainToggle = menuWrapper.querySelector('[data-main-burger]');
-    const mobileMainOverlay = menuWrapper.querySelector('[data-main-mobile-nav]');
+    const sidebarToggle = menuWrapper.querySelector('.btn-sidebar-toggle');
     const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
     const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
 
-    // Mobile main menu functionality (left side)
-    if (mobileMainToggle && mobileMainOverlay) {
-        mobileMainToggle.addEventListener('click', function(e) {
+    // Discourse sidebar toggle functionality
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function(e) {
             e.preventDefault();
-            const isActive = mobileMainOverlay.classList.contains('active');
 
-            if (isActive) {
-                mobileMainOverlay.classList.remove('active');
-                mobileMainToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                mobileMainOverlay.classList.add('active');
-                mobileMainToggle.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            // Try multiple methods to trigger Discourse sidebar
+            // Method 1: Find and click existing Discourse sidebar toggle
+            const discourseSidebarToggle = document.querySelector('.sidebar-toggle:not(.btn-sidebar-toggle)') ||
+                                         document.querySelector('#toggle-hamburger-menu') ||
+                                         document.querySelector('.hamburger-dropdown');
+
+            if (discourseSidebarToggle) {
+                discourseSidebarToggle.click();
+                return;
             }
-        });
 
-        mobileMainOverlay.addEventListener('click', function(e) {
-            if (e.target === mobileMainOverlay) {
-                mobileMainOverlay.classList.remove('active');
-                mobileMainToggle.classList.remove('active');
-                document.body.style.overflow = '';
+            // Method 2: Use Discourse's application controller if available
+            if (window.Discourse && window.Discourse.__container__) {
+                const appController = window.Discourse.__container__.lookup('controller:application');
+                if (appController && appController.toggleHamburger) {
+                    appController.toggleHamburger();
+                    return;
+                }
+            }
+
+            // Method 3: Dispatch Discourse-compatible events
+            const hamburgerMenuEvent = new CustomEvent('click');
+            const hamburgerMenu = document.querySelector('.hamburger-panel') ||
+                                document.querySelector('#hamburger-menu');
+            if (hamburgerMenu) {
+                hamburgerMenu.dispatchEvent(hamburgerMenuEvent);
             }
         });
     }
@@ -179,12 +170,8 @@ function initializePLCNextHeader() {
             if (mobileOverlay && mobileMenuToggle) {
                 mobileOverlay.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
+                document.body.style.overflow = '';
             }
-            if (mobileMainOverlay && mobileMainToggle) {
-                mobileMainOverlay.classList.remove('active');
-                mobileMainToggle.classList.remove('active');
-            }
-            document.body.style.overflow = '';
         }
     });
 }
