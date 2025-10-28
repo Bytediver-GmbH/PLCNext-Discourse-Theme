@@ -223,20 +223,29 @@
 
 .mobile-menu-toggle {
   display: none;
+  position: relative;
+  width: 40px;
+  height: 40px;
 
   @media (max-width: 991.98px) {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .burger-line {
-    width: 18px;
+    display: block;
+    width: 20px;
     height: 2px;
     background: var(--color-white);
-    transition: all 0.3s ease;
-    border-radius: 1px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 2px;
+    position: relative;
+    transform-origin: center;
 
-    & + .burger-line {
-      margin-top: 3px;
+    &:not(:last-child) {
+      margin-bottom: 4px;
     }
   }
 
@@ -246,15 +255,16 @@
 
   &.active {
     .burger-line:nth-child(1) {
-      transform: rotate(45deg) translate(4px, 4px);
+      transform: rotate(45deg) translateY(6px);
     }
 
     .burger-line:nth-child(2) {
       opacity: 0;
+      transform: translateX(-20px);
     }
 
     .burger-line:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
+      transform: rotate(-45deg) translateY(-6px);
     }
   }
 }
