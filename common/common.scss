@@ -1,29 +1,35 @@
 /* PLCNext Community Header - Exact Recreation */
 
-/* Import fonts used by PLCNext */
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+/* Using system fonts as per PLCNext Community website */
 
-/* PLCNext Community Color Palette */
+/* PLCNext Community Color Palette - Exact Colors */
 :root {
-  --color-primary: #006bb3;
-  --color-secondary: #003d66;
-  --color-accent: #00a6d6;
-  --color-orange: #ff6900;
-  --color-text-dark: #333333;
-  --color-text-light: #666666;
+  --wp--preset--color--primary: #0098A1;
+  --wp--preset--color--plc-black: #202020;
+  --wp--preset--color--gray-100: #F2F4F6;
+  --wp--preset--color--gray-600: #A2A7A9;
+  --wp--preset--color--white: #ffffff;
+
+  /* Theme colors for compatibility */
+  --color-primary: var(--wp--preset--color--primary);
+  --color-secondary: #007075;
+  --color-accent: #00c4cc;
+  --color-text-dark: var(--wp--preset--color--plc-black);
+  --color-text-light: var(--wp--preset--color--gray-600);
   --color-text-muted: #999999;
-  --color-white: #ffffff;
-  --color-gray-light: #f5f5f5;
+  --color-white: var(--wp--preset--color--white);
+  --color-gray-light: var(--wp--preset--color--gray-100);
   --color-gray-medium: #e0e0e0;
-  --color-gray-dark: #666666;
+  --color-gray-dark: var(--wp--preset--color--gray-600);
   --color-border: #d9d9d9;
-  --color-bg-overlay: rgba(0, 0, 0, 0.8);
+  --color-bg-overlay: rgba(32, 32, 32, 0.8);
   --color-shadow: rgba(0, 0, 0, 0.1);
 
-  /* Typography */
-  --font-primary: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  /* Typography - Using system fonts like the original */
+  --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-weight-light: 300;
   --font-weight-normal: 400;
+  --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
@@ -34,9 +40,9 @@
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
 
-  /* Breakpoints */
-  --breakpoint-mobile: 768px;
-  --breakpoint-desktop: 1024px;
+  /* Breakpoints - Matching original */
+  --breakpoint-mobile: 767.98px;
+  --breakpoint-medium: 991.98px;
   --breakpoint-large: 1200px;
 }
 
@@ -71,14 +77,19 @@
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-sm);
+  padding: 0 15px;
   display: flex;
   align-items: center;
-  height: 70px;
+  height: 80px;
   position: relative;
 
+  @media (min-width: 992px) {
+    padding: 0 30px;
+    height: 90px;
+  }
+
   @media (min-width: 1200px) {
-    padding: 0 var(--spacing-md);
+    max-width: 1140px;
   }
 }
 
@@ -92,9 +103,13 @@
     line-height: 0;
 
     .logo-image {
-      height: 45px;
+      height: 50px;
       width: auto;
       transition: opacity 0.2s ease;
+
+      @media (min-width: 992px) {
+        height: 60px;
+      }
 
       &:hover {
         opacity: 0.8;
@@ -107,7 +122,7 @@
 .main-navigation {
   flex: 1;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 991.98px) {
     display: none;
   }
 }
@@ -261,48 +276,49 @@
 .mobile-menu-toggle {
   background: none;
   border: none;
-  padding: var(--spacing-sm);
+  padding: 8px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--color-text-dark);
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
 
   &:hover {
     background-color: var(--color-gray-light);
     color: var(--color-primary);
+
+    .icon-search::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230098A1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+    }
   }
 }
 
 .search-toggle {
-  @media (max-width: 1023px) {
+  @media (max-width: 991.98px) {
     display: none;
-  }
-
-  .icon-search::before {
-    content: "\1f50d";
-    font-size: 1.2rem;
   }
 }
 
 .mobile-menu-toggle {
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 991.98px) {
     display: flex;
   }
 
   .burger-line {
-    width: 20px;
+    width: 18px;
     height: 2px;
     background: var(--color-text-dark);
     transition: all 0.3s ease;
+    border-radius: 1px;
 
     & + .burger-line {
-      margin-top: 4px;
+      margin-top: 3px;
     }
   }
 
@@ -312,7 +328,7 @@
 
   &.active {
     .burger-line:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
+      transform: rotate(45deg) translate(4px, 4px);
     }
 
     .burger-line:nth-child(2) {
@@ -320,7 +336,7 @@
     }
 
     .burger-line:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
+      transform: rotate(-45deg) translate(5px, -5px);
     }
   }
 }
@@ -453,7 +469,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .header-container {
     height: 60px;
     padding: 0 var(--spacing-sm);
@@ -472,7 +488,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 992px) {
   .header-container {
     padding: 0 var(--spacing-lg);
   }
