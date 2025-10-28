@@ -30,56 +30,104 @@
 
 <script>
 function insertPLCNextHeader() {
-    // Instead of replacing, modify the existing Discourse header
+    console.log('Inserting PLCNext Header...');
+
+    // Wait for Discourse header to be available
     const discourseHeader = document.querySelector('#site-header') || document.querySelector('.d-header');
-    if (!discourseHeader) return;
+    if (!discourseHeader) {
+        console.log('No Discourse header found, retrying...');
+        setTimeout(insertPLCNextHeader, 500);
+        return;
+    }
+
+    console.log('Found Discourse header:', discourseHeader);
 
     // Remove existing PLCNext modifications
     const existingPLCNext = discourseHeader.querySelector('.plcnext-navigation');
     if (existingPLCNext) existingPLCNext.remove();
 
-    // Add PLCNext logo and navigation
+    // Add PLCNext navigation
     const template = document.getElementById('plcnext-header-template');
-    if (!template) return;
+    if (!template) {
+        console.log('Template not found');
+        return;
+    }
 
     const headerContent = template.content.cloneNode(true);
     const plcnextNav = headerContent.querySelector('.main-navigation');
 
     if (plcnextNav) {
         plcnextNav.classList.add('plcnext-navigation');
-        // Insert after the logo or at the beginning of the header contents
-        const headerContents = discourseHeader.querySelector('.contents') || discourseHeader;
-        const logo = headerContents.querySelector('.logo-mobile') || headerContents.querySelector('.title');
+        console.log('Adding navigation to header...');
 
-        if (logo && logo.nextSibling) {
-            headerContents.insertBefore(plcnextNav, logo.nextSibling);
+        // Try different insertion points
+        const headerContents = discourseHeader.querySelector('.contents') ||
+                             discourseHeader.querySelector('.wrap') ||
+                             discourseHeader;
+
+        const insertionPoint = headerContents.querySelector('.panel') ||
+                             headerContents.querySelector('.header-buttons') ||
+                             headerContents.querySelector('.auth-buttons') ||
+                             headerContents.lastElementChild;
+
+        if (insertionPoint) {
+            insertionPoint.parentNode.insertBefore(plcnextNav, insertionPoint);
         } else {
             headerContents.appendChild(plcnextNav);
         }
+
+        console.log('Navigation inserted');
     }
 
-    // Replace logo if needed
+    // Replace logo
     replaceLogo();
 
     initializePLCNextHeader();
 }
 
 function replaceLogo() {
-    const logoContainers = document.querySelectorAll('#site-header .logo-mobile, #site-header .title, .d-header .logo-mobile, .d-header .title');
+    console.log('Replacing logo...');
 
-    logoContainers.forEach(container => {
-        const logoLink = container.querySelector('a') || container;
-        if (logoLink) {
-            logoLink.href = 'https://www.plcnext-community.net';
+    // Find all possible logo elements
+    const logoSelectors = [
+        '#site-header .logo-mobile img',
+        '#site-header .title a',
+        '.d-header .logo-mobile img',
+        '.d-header .title a',
+        '#site-header .logo img',
+        '.d-header .logo img'
+    ];
 
-            const logoImg = logoLink.querySelector('img');
-            if (logoImg) {
-                logoImg.src = 'https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg';
-                logoImg.alt = 'PLCnext Community';
-                logoImg.style.height = '45px';
-                logoImg.style.width = 'auto';
+    logoSelectors.forEach(selector => {
+        const logoElements = document.querySelectorAll(selector);
+        logoElements.forEach(element => {
+            console.log('Found logo element:', element);
+
+            if (element.tagName === 'IMG') {
+                element.src = 'https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg';
+                element.alt = 'PLCnext Community';
+                element.style.height = '45px';
+                element.style.width = 'auto';
+            } else if (element.tagName === 'A') {
+                element.href = 'https://www.plcnext-community.net';
+
+                // Check if it contains an img
+                const img = element.querySelector('img');
+                if (img) {
+                    img.src = 'https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg';
+                    img.alt = 'PLCnext Community';
+                    img.style.height = '45px';
+                    img.style.width = 'auto';
+                }
+
+                // If it's a text-based title, replace the text
+                if (!img && element.textContent) {
+                    element.innerHTML = '<img src="https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg" alt="PLCnext Community" style="height: 45px; width: auto;">';
+                }
             }
-        }
+
+            console.log('Logo replaced');
+        });
     });
 }
 

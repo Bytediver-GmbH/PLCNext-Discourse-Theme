@@ -28,6 +28,15 @@
   top: 0 !important;
   z-index: 1000 !important;
 
+  // Force PLCNext logo styles
+  .logo-mobile img,
+  .title img,
+  .logo img {
+    content: url('https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg') !important;
+    height: 45px !important;
+    width: auto !important;
+  }
+
   .contents {
     max-width: 1382px !important;
     margin: 0 auto !important;
@@ -39,9 +48,10 @@
   .plcnext-navigation {
     flex: 1;
     margin-left: 40px;
+    display: block !important;
 
     @media (max-width: 991.98px) {
-      display: none;
+      display: none !important;
     }
 
     .nav-menu {
