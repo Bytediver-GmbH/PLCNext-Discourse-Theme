@@ -8,8 +8,10 @@
     <header class="header-main">
       <div class="header-container">
         <div class="mobile-nav-left">
-          <button class="btn btn-flat btn-sidebar-toggle no-text btn-icon" title="Toggle Sidebar">
-            <svg class="fa d-icon d-icon-bars svg-icon svg-node" aria-hidden="true"><use href="#bars"></use></svg>
+          <button class="btn btn-flat hamburger-dropdown no-text btn-icon" title="Open Menu" data-hamburger>
+            <svg class="fa d-icon d-icon-bars svg-icon svg-string" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
+            </svg>
           </button>
         </div>
 
@@ -100,41 +102,25 @@ function initializePLCNextHeader() {
     const menuWrapper = document.querySelector('[data-menu-wrapper]');
     if (!menuWrapper) return;
 
-    const sidebarToggle = menuWrapper.querySelector('.btn-sidebar-toggle');
     const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
     const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
 
-    // Discourse sidebar toggle functionality
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function(e) {
+    // Discourse hamburger menu toggle functionality
+    const hamburgerToggle = menuWrapper.querySelector('[data-hamburger]');
+    if (hamburgerToggle) {
+        hamburgerToggle.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // Try multiple methods to trigger Discourse sidebar
-            // Method 1: Find and click existing Discourse sidebar toggle
-            const discourseSidebarToggle = document.querySelector('.sidebar-toggle:not(.btn-sidebar-toggle)') ||
-                                         document.querySelector('#toggle-hamburger-menu') ||
-                                         document.querySelector('.hamburger-dropdown');
+            // Find and click the actual Discourse hamburger menu button
+            const discourseHamburger = document.querySelector('.hamburger-dropdown:not([data-hamburger])') ||
+                                     document.querySelector('.btn-hamburger') ||
+                                     document.querySelector('.toggle-hamburger-menu');
 
-            if (discourseSidebarToggle) {
-                discourseSidebarToggle.click();
-                return;
-            }
-
-            // Method 2: Use Discourse's application controller if available
-            if (window.Discourse && window.Discourse.__container__) {
-                const appController = window.Discourse.__container__.lookup('controller:application');
-                if (appController && appController.toggleHamburger) {
-                    appController.toggleHamburger();
-                    return;
-                }
-            }
-
-            // Method 3: Dispatch Discourse-compatible events
-            const hamburgerMenuEvent = new CustomEvent('click');
-            const hamburgerMenu = document.querySelector('.hamburger-panel') ||
-                                document.querySelector('#hamburger-menu');
-            if (hamburgerMenu) {
-                hamburgerMenu.dispatchEvent(hamburgerMenuEvent);
+            if (discourseHamburger) {
+                discourseHamburger.click();
+            } else {
+                // If no hamburger found, create and dispatch a custom event
+                document.body.classList.toggle('hamburger-menu-visible');
             }
         });
     }

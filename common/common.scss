@@ -195,7 +195,7 @@
 
 .search-toggle,
 .user-toggle,
-.btn-sidebar-toggle,
+.hamburger-dropdown,
 .mobile-menu-toggle {
   background: none;
   border: none;
@@ -254,7 +254,7 @@
   text-decoration: none;
 }
 
-.btn-sidebar-toggle {
+.hamburger-dropdown[data-hamburger] {
   display: none;
 
   @media (max-width: 991.98px) {
