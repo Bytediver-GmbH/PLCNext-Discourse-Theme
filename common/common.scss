@@ -58,9 +58,9 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: var(--color-white);
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 2px 8px var(--color-shadow);
+  background: var(--color-text-dark);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   font-family: var(--font-primary);
 
   &[data-menu-wrapper] {
@@ -71,7 +71,7 @@
 /* Header Main */
 .header-main {
   position: relative;
-  background: var(--color-white);
+  background: var(--color-text-dark);
 }
 
 .header-container {
@@ -168,7 +168,7 @@
 .nav-link {
   display: block;
   padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--color-text-dark);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
@@ -178,12 +178,12 @@
 
   &:hover {
     color: var(--color-primary);
-    background-color: rgba(0, 107, 179, 0.05);
+    background-color: rgba(0, 152, 161, 0.1);
   }
 
   &.nav-link-active {
     color: var(--color-primary);
-    background-color: rgba(0, 107, 179, 0.1);
+    background-color: rgba(0, 152, 161, 0.15);
     font-weight: var(--font-weight-bold);
   }
 
@@ -197,7 +197,7 @@
       background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
       color: var(--color-white);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 107, 179, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 152, 161, 0.3);
     }
   }
 }
@@ -279,7 +279,7 @@
   padding: 8px;
   cursor: pointer;
   border-radius: 6px;
-  color: var(--color-text-dark);
+  color: var(--color-white);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -288,7 +288,7 @@
   min-height: 40px;
 
   &:hover {
-    background-color: var(--color-gray-light);
+    background-color: rgba(255, 255, 255, 0.1);
     color: var(--color-primary);
 
     .icon-search::before {
@@ -313,7 +313,7 @@
   .burger-line {
     width: 18px;
     height: 2px;
-    background: var(--color-text-dark);
+    background: var(--color-white);
     transition: all 0.3s ease;
     border-radius: 1px;
 
