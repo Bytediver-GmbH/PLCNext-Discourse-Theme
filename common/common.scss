@@ -62,6 +62,17 @@
   }
 }
 
+/* Mobile Navigation Left */
+.mobile-nav-left {
+  display: none;
+  margin-right: 15px;
+
+  @media (max-width: 991.98px) {
+    display: flex;
+    align-items: center;
+  }
+}
+
 /* Logo Section */
 .logo-section {
   flex-shrink: 0;
@@ -179,6 +190,8 @@
 }
 
 .search-toggle,
+.user-toggle,
+.mobile-main-menu-toggle,
 .mobile-menu-toggle {
   background: none;
   border: none;
@@ -200,24 +213,88 @@
     .icon-search::before {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230098A1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
     }
+
+    .icon-user::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230098A1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='12' cy='7' r='4'%3E%3C/circle%3E%3C/svg%3E");
+    }
   }
 }
 
 /* Icon Styles */
-.icon-search::before {
+.icon-search::before,
+.icon-user::before {
   content: "";
   display: inline-block;
   width: 18px;
   height: 18px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
+.icon-search::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.icon-user::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='12' cy='7' r='4'%3E%3C/circle%3E%3C/svg%3E");
+}
+
 .search-toggle {
   @media (max-width: 991.98px) {
     display: none;
+  }
+}
+
+.user-toggle {
+  text-decoration: none;
+}
+
+.mobile-main-menu-toggle {
+  display: none;
+  position: relative;
+  width: 40px;
+  height: 40px;
+
+  @media (max-width: 991.98px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .burger-line {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--color-white);
+    transition: all 0.3s ease-in-out;
+    border-radius: 2px;
+    position: relative;
+    transform-origin: center;
+
+    &:not(:last-child) {
+      margin-bottom: 4px;
+    }
+  }
+
+  &:hover .burger-line {
+    background: var(--color-primary);
+  }
+
+  &.active {
+    .burger-line:nth-child(1) {
+      transform: rotate(45deg) translateY(6px);
+    }
+
+    .burger-line:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    .burger-line:nth-child(3) {
+      transform: rotate(-45deg) translateY(-6px);
+    }
   }
 }
 
@@ -269,7 +346,75 @@
   }
 }
 
-/* Mobile Navigation */
+/* Mobile Main Menu (Left Slide) */
+.mobile-main-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-bg-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+
+    .mobile-main-content {
+      transform: translateX(0);
+    }
+  }
+}
+
+.mobile-main-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  background: var(--color-white);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+
+  @media (max-width: 767.98px) {
+    width: 280px;
+  }
+}
+
+.mobile-main-navigation {
+  padding: 3rem 1.5rem;
+}
+
+.mobile-main-menu {
+  list-style: none;
+
+  li {
+    border-bottom: 1px solid var(--color-gray-medium);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      display: block;
+      padding: 1.5rem 0;
+      color: var(--color-text-dark);
+      text-decoration: none;
+      font-weight: var(--font-weight-semibold);
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--color-primary);
+      }
+    }
+  }
+}
+
+/* Mobile User Menu (Right Slide) */
 .mobile-overlay {
   position: fixed;
   top: 0;

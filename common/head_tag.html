@@ -7,6 +7,14 @@
   <div class="menu-wrapper" data-menu-wrapper>
     <header class="header-main">
       <div class="header-container">
+        <div class="mobile-nav-left">
+          <button class="mobile-main-menu-toggle" data-main-burger title="Main Menu">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+          </button>
+        </div>
+
         <div class="logo-section">
           <a href="https://www.plcnext-community.net" class="logo">
             <img src="https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg" alt="PLCnext Community" class="logo-image">
@@ -40,6 +48,9 @@
           <a href="https://www.plcnext-community.net/?s=" target="_blank" class="search-toggle">
             <i class="icon-search"></i>
           </a>
+          <a href="/u" class="user-toggle" title="User Menu">
+            <i class="icon-user"></i>
+          </a>
           <button class="mobile-menu-toggle" data-burger>
             <span class="burger-line"></span>
             <span class="burger-line"></span>
@@ -49,16 +60,32 @@
       </div>
     </header>
 
-    <div class="mobile-overlay" data-mobile-nav>
-      <div class="mobile-nav-content">
-        <nav class="mobile-navigation">
-          <ul class="mobile-nav-menu">
+    <!-- Mobile Main Menu Overlay (Left) -->
+    <div class="mobile-main-overlay" data-main-mobile-nav>
+      <div class="mobile-main-content">
+        <nav class="mobile-main-navigation">
+          <ul class="mobile-main-menu">
             <li><a href="https://www.plcnext-community.net/infocenter/news">News & Articles</a></li>
             <li><a href="https://www.plcnext-community.net/about-plcnext-technology">About PLCnext Technology</a></li>
             <li><a href="https://www.plcnext-community.net/learning">Learning</a></li>
             <li><a href="https://www.plcnext-community.net/makers-blog">Maker's Blog</a></li>
             <li><a href="/">Forum</a></li>
             <li><a href="https://www.plcnext-community.net/getting-started-with-plcnext-technology/#learn-more">Getting started</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile User Menu Overlay (Right) -->
+    <div class="mobile-overlay" data-mobile-nav>
+      <div class="mobile-nav-content">
+        <nav class="mobile-navigation">
+          <ul class="mobile-nav-menu">
+            <li><a href="/u">My Account</a></li>
+            <li><a href="/preferences">Preferences</a></li>
+            <li><a href="/bookmarks">Bookmarks</a></li>
+            <li><a href="/notifications">Notifications</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
         </nav>
       </div>
@@ -90,9 +117,38 @@ function initializePLCNextHeader() {
     const menuWrapper = document.querySelector('[data-menu-wrapper]');
     if (!menuWrapper) return;
 
+    const mobileMainToggle = menuWrapper.querySelector('[data-main-burger]');
+    const mobileMainOverlay = menuWrapper.querySelector('[data-main-mobile-nav]');
     const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
     const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
 
+    // Mobile main menu functionality (left side)
+    if (mobileMainToggle && mobileMainOverlay) {
+        mobileMainToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isActive = mobileMainOverlay.classList.contains('active');
+
+            if (isActive) {
+                mobileMainOverlay.classList.remove('active');
+                mobileMainToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                mobileMainOverlay.classList.add('active');
+                mobileMainToggle.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        mobileMainOverlay.addEventListener('click', function(e) {
+            if (e.target === mobileMainOverlay) {
+                mobileMainOverlay.classList.remove('active');
+                mobileMainToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // Mobile user menu functionality (right side)
     if (mobileMenuToggle && mobileOverlay) {
         mobileMenuToggle.addEventListener('click', function(e) {
             e.preventDefault();
@@ -120,8 +176,14 @@ function initializePLCNextHeader() {
 
     window.addEventListener('resize', function() {
         if (window.innerWidth > 991) {
-            mobileOverlay.classList.remove('active');
-            mobileMenuToggle.classList.remove('active');
+            if (mobileOverlay && mobileMenuToggle) {
+                mobileOverlay.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            }
+            if (mobileMainOverlay && mobileMainToggle) {
+                mobileMainOverlay.classList.remove('active');
+                mobileMainToggle.classList.remove('active');
+            }
             document.body.style.overflow = '';
         }
     });
