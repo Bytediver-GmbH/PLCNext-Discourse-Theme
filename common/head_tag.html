@@ -19,7 +19,7 @@
         <a href="https://www.plcnext-community.net/makers-blog" class="nav-link">Maker's Blog</a>
       </li>
       <li class="nav-item">
-        <a href="/" class="nav-link nav-link-active">Forum</a>
+        <a href="/" class="nav-link">Forum</a>
       </li>
       <li class="nav-item">
         <a href="https://www.plcnext-community.net/getting-started-with-plcnext-technology/#learn-more" class="nav-link nav-link-cta">Getting started</a>
@@ -30,17 +30,12 @@
 
 <script>
 function insertPLCNextHeader() {
-    console.log('Inserting PLCNext Header...');
-
     // Wait for Discourse header to be available
     const discourseHeader = document.querySelector('#site-header') || document.querySelector('.d-header');
     if (!discourseHeader) {
-        console.log('No Discourse header found, retrying...');
         setTimeout(insertPLCNextHeader, 500);
         return;
     }
-
-    console.log('Found Discourse header:', discourseHeader);
 
     // Remove existing PLCNext modifications
     const existingPLCNext = discourseHeader.querySelector('.plcnext-navigation');
@@ -48,17 +43,13 @@ function insertPLCNextHeader() {
 
     // Add PLCNext navigation
     const template = document.getElementById('plcnext-header-template');
-    if (!template) {
-        console.log('Template not found');
-        return;
-    }
+    if (!template) return;
 
     const headerContent = template.content.cloneNode(true);
     const plcnextNav = headerContent.querySelector('.main-navigation');
 
     if (plcnextNav) {
         plcnextNav.classList.add('plcnext-navigation');
-        console.log('Adding navigation to header...');
 
         // Try different insertion points
         const headerContents = discourseHeader.querySelector('.contents') ||
@@ -75,8 +66,6 @@ function insertPLCNextHeader() {
         } else {
             headerContents.appendChild(plcnextNav);
         }
-
-        console.log('Navigation inserted');
     }
 
     // Replace logo
@@ -86,8 +75,6 @@ function insertPLCNextHeader() {
 }
 
 function replaceLogo() {
-    console.log('Replacing logo...');
-
     // Find all possible logo elements
     const logoSelectors = [
         '#site-header .logo-mobile img',
@@ -101,8 +88,6 @@ function replaceLogo() {
     logoSelectors.forEach(selector => {
         const logoElements = document.querySelectorAll(selector);
         logoElements.forEach(element => {
-            console.log('Found logo element:', element);
-
             if (element.tagName === 'IMG') {
                 element.src = 'https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg';
                 element.alt = 'PLCnext Community';
@@ -125,8 +110,6 @@ function replaceLogo() {
                     element.innerHTML = '<img src="https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg" alt="PLCnext Community" style="height: 45px; width: auto;">';
                 }
             }
-
-            console.log('Logo replaced');
         });
     });
 }
