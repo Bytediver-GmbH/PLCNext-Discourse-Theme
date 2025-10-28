@@ -79,23 +79,14 @@
         </nav>
 
         <div class="header-controls" data-controls>
-          <button class="search-toggle" data-search-toggle>
+          <a href="https://www.plcnext-community.net/?s=" target="_blank" class="search-toggle">
             <i class="icon-search"></i>
-          </button>
+          </a>
           <button class="mobile-menu-toggle" data-burger>
             <span class="burger-line"></span>
             <span class="burger-line"></span>
             <span class="burger-line"></span>
           </button>
-        </div>
-
-        <div class="search-overlay" data-search-overlay>
-          <div class="search-container">
-            <input type="search" placeholder="Search..." class="search-input">
-            <button class="search-close" data-search-close>
-              <i class="icon-close"></i>
-            </button>
-          </div>
         </div>
       </div>
     </header>
@@ -160,65 +151,16 @@ function initializePLCNextHeader() {
     }
 
     // Elements
-    const searchToggle = menuWrapper.querySelector('[data-search-toggle]');
-    const searchOverlay = menuWrapper.querySelector('[data-search-overlay]');
-    const searchClose = menuWrapper.querySelector('[data-search-close]');
     const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
     const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
     const submenuItems = menuWrapper.querySelectorAll('[data-submenu]');
 
-    // Search functionality
-    if (searchToggle && searchOverlay) {
-        searchToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            searchOverlay.classList.toggle('active');
-
-            if (searchOverlay.classList.contains('active')) {
-                const searchInput = searchOverlay.querySelector('.search-input');
-                if (searchInput) {
-                    setTimeout(() => searchInput.focus(), 100);
-                }
-            }
-        });
-
-        if (searchClose) {
-            searchClose.addEventListener('click', function(e) {
-                e.preventDefault();
-                searchOverlay.classList.remove('active');
-            });
-        }
-
-        // Close search on outside click
-        document.addEventListener('click', function(e) {
-            if (!searchOverlay.contains(e.target) && !searchToggle.contains(e.target)) {
-                searchOverlay.classList.remove('active');
-            }
-        });
-
-        // Handle search input
-        const searchInput = searchOverlay.querySelector('.search-input');
-        if (searchInput) {
-            searchInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const query = this.value.trim();
-                    if (query) {
-                        // Redirect to forum search
-                        window.location.href = '/search?q=' + encodeURIComponent(query);
-                    }
-                }
-
-                if (e.key === 'Escape') {
-                    searchOverlay.classList.remove('active');
-                }
-            });
-        }
-    }
-
     // Mobile menu functionality
     if (mobileMenuToggle && mobileOverlay) {
-        mobileMenuToggle.addEventListener('click', function(e) {
+        const newMobileToggle = mobileMenuToggle.cloneNode(true);
+        mobileMenuToggle.parentNode.replaceChild(newMobileToggle, mobileMenuToggle);
+
+        newMobileToggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -226,11 +168,11 @@ function initializePLCNextHeader() {
 
             if (isActive) {
                 mobileOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
+                newMobileToggle.classList.remove('active');
                 document.body.style.overflow = '';
             } else {
                 mobileOverlay.classList.add('active');
-                mobileMenuToggle.classList.add('active');
+                newMobileToggle.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
         });
@@ -239,16 +181,7 @@ function initializePLCNextHeader() {
         mobileOverlay.addEventListener('click', function(e) {
             if (e.target === mobileOverlay) {
                 mobileOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // Close mobile menu on escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && mobileOverlay.classList.contains('active')) {
-                mobileOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
+                newMobileToggle.classList.remove('active');
                 document.body.style.overflow = '';
             }
         });
@@ -286,12 +219,12 @@ function initializePLCNextHeader() {
         // Close mobile menu on resize to desktop
         if (window.innerWidth > 991) {
             mobileOverlay.classList.remove('active');
-            mobileMenuToggle.classList.remove('active');
+            document.querySelector('[data-burger]').classList.remove('active');
             document.body.style.overflow = '';
         }
 
         // Hide submenus on mobile
-        if (window.innerWidth <= 1023) {
+        if (window.innerWidth <= 991) {
             submenuItems.forEach(function(item) {
                 const submenuOverlay = item.querySelector('[data-overlay]');
                 if (submenuOverlay) {
@@ -299,52 +232,6 @@ function initializePLCNextHeader() {
                     submenuOverlay.style.visibility = 'hidden';
                 }
             });
-        }
-    });
-
-    // Smooth scrolling for anchor links
-    menuWrapper.addEventListener('click', function(e) {
-        if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('#')) {
-            e.preventDefault();
-            const targetId = e.target.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                const headerHeight = menuWrapper.offsetHeight;
-                const targetPosition = targetElement.offsetTop - headerHeight;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }
-    });
-
-    // Sticky header effect on scroll
-    let lastScrollTop = 0;
-    let isScrolling = false;
-
-    function handleScroll() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // Scrolling down
-            menuWrapper.style.transform = 'translateY(-100%)';
-        } else {
-            // Scrolling up
-            menuWrapper.style.transform = 'translateY(0)';
-        }
-
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        isScrolling = false;
-    }
-
-    // Throttled scroll handler
-    window.addEventListener('scroll', function() {
-        if (!isScrolling) {
-            window.requestAnimationFrame(handleScroll);
-            isScrolling = true;
         }
     });
 
@@ -432,7 +319,7 @@ function trackHeaderClick(element, action) {
     position: absolute;
     top: -9999px;
     left: -9999px;
-    background: url('https://www.plcnext-community.net/assets/images/plcnext-logo.svg') no-repeat;
+    background: url('https://www.plcnext-community.net//app/themes/plcnextcommunity/static/images/logo-plc-next.svg') no-repeat;
     width: 1px;
     height: 1px;
 }
