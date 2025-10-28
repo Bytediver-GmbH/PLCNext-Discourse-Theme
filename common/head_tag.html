@@ -2,180 +2,90 @@
 <meta name="theme-name" content="PLCNext Community Header Theme">
 <meta name="theme-version" content="2.0.0">
 
-<!-- PLCNext Header Template -->
+<!-- PLCNext Navigation Template -->
 <template id="plcnext-header-template">
-  <div class="menu-wrapper" data-menu-wrapper>
-    <header class="header-main">
-      <div class="header-container">
-        <div class="mobile-nav-left">
-          <button class="btn btn-flat hamburger-dropdown no-text btn-icon" title="Open Menu" data-hamburger>
-            <svg class="fa d-icon d-icon-bars svg-icon svg-string" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-              <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
-            </svg>
-          </button>
-        </div>
-
-        <div class="logo-section">
-          <a href="https://www.plcnext-community.net" class="logo">
-            <img src="https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg" alt="PLCnext Community" class="logo-image">
-          </a>
-        </div>
-
-        <nav class="main-navigation">
-          <ul class="nav-menu">
-            <li class="nav-item">
-              <a href="https://www.plcnext-community.net/infocenter/news" class="nav-link">News & Articles</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://www.plcnext-community.net/about-plcnext-technology" class="nav-link">About PLCnext Technology</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://www.plcnext-community.net/learning" class="nav-link">Learning</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://www.plcnext-community.net/makers-blog" class="nav-link">Maker's Blog</a>
-            </li>
-            <li class="nav-item">
-              <a href="/" class="nav-link">Forum</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://www.plcnext-community.net/getting-started-with-plcnext-technology/#learn-more" class="nav-link nav-link-cta">Getting started</a>
-            </li>
-          </ul>
-        </nav>
-
-        <div class="header-controls">
-          <a href="https://www.plcnext-community.net/?s=" target="_blank" class="search-toggle">
-            <i class="icon-search"></i>
-          </a>
-          <a href="/u" class="user-toggle" title="User Menu">
-            <i class="icon-user"></i>
-          </a>
-          <button class="mobile-menu-toggle" data-burger>
-            <span class="burger-line"></span>
-            <span class="burger-line"></span>
-            <span class="burger-line"></span>
-          </button>
-        </div>
-      </div>
-    </header>
-
-
-    <!-- Mobile User Menu Overlay (Right) -->
-    <div class="mobile-overlay" data-mobile-nav>
-      <div class="mobile-nav-content">
-        <nav class="mobile-navigation">
-          <ul class="mobile-nav-menu">
-            <li><a href="/u">My Account</a></li>
-            <li><a href="/preferences">Preferences</a></li>
-            <li><a href="/bookmarks">Bookmarks</a></li>
-            <li><a href="/notifications">Notifications</a></li>
-            <li><a href="/logout">Logout</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </div>
+  <nav class="main-navigation">
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="https://www.plcnext-community.net/infocenter/news" class="nav-link">News & Articles</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://www.plcnext-community.net/about-plcnext-technology" class="nav-link">About PLCnext Technology</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://www.plcnext-community.net/learning" class="nav-link">Learning</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://www.plcnext-community.net/makers-blog" class="nav-link">Maker's Blog</a>
+      </li>
+      <li class="nav-item">
+        <a href="/" class="nav-link nav-link-active">Forum</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://www.plcnext-community.net/getting-started-with-plcnext-technology/#learn-more" class="nav-link nav-link-cta">Getting started</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
 function insertPLCNextHeader() {
-    const existingHeader = document.querySelector('[data-menu-wrapper]');
-    if (existingHeader) existingHeader.remove();
+    // Instead of replacing, modify the existing Discourse header
+    const discourseHeader = document.querySelector('#site-header') || document.querySelector('.d-header');
+    if (!discourseHeader) return;
 
+    // Remove existing PLCNext modifications
+    const existingPLCNext = discourseHeader.querySelector('.plcnext-navigation');
+    if (existingPLCNext) existingPLCNext.remove();
+
+    // Add PLCNext logo and navigation
     const template = document.getElementById('plcnext-header-template');
     if (!template) return;
 
     const headerContent = template.content.cloneNode(true);
-    const body = document.body;
+    const plcnextNav = headerContent.querySelector('.main-navigation');
 
-    if (body.firstChild) {
-        body.insertBefore(headerContent, body.firstChild);
-    } else {
-        body.appendChild(headerContent);
+    if (plcnextNav) {
+        plcnextNav.classList.add('plcnext-navigation');
+        // Insert after the logo or at the beginning of the header contents
+        const headerContents = discourseHeader.querySelector('.contents') || discourseHeader;
+        const logo = headerContents.querySelector('.logo-mobile') || headerContents.querySelector('.title');
+
+        if (logo && logo.nextSibling) {
+            headerContents.insertBefore(plcnextNav, logo.nextSibling);
+        } else {
+            headerContents.appendChild(plcnextNav);
+        }
     }
+
+    // Replace logo if needed
+    replaceLogo();
 
     initializePLCNextHeader();
 }
 
-function initializePLCNextHeader() {
-    const menuWrapper = document.querySelector('[data-menu-wrapper]');
-    if (!menuWrapper) return;
+function replaceLogo() {
+    const logoContainers = document.querySelectorAll('#site-header .logo-mobile, #site-header .title, .d-header .logo-mobile, .d-header .title');
 
-    const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
-    const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
+    logoContainers.forEach(container => {
+        const logoLink = container.querySelector('a') || container;
+        if (logoLink) {
+            logoLink.href = 'https://www.plcnext-community.net';
 
-    // Use hidden Discourse header hamburger functionality
-    const hamburgerToggle = menuWrapper.querySelector('[data-hamburger]');
-    if (hamburgerToggle) {
-        hamburgerToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            // Find the hidden Discourse header hamburger button
-            const discourseHamburger = document.querySelector('#site-header .hamburger-dropdown') ||
-                                     document.querySelector('.d-header .hamburger-dropdown') ||
-                                     document.querySelector('#site-header .btn-hamburger') ||
-                                     document.querySelector('.d-header .btn-hamburger') ||
-                                     document.querySelector('#site-header [data-toggle="hamburger-menu"]') ||
-                                     document.querySelector('.d-header [data-toggle="hamburger-menu"]');
-
-            if (discourseHamburger) {
-                // Temporarily show the hidden header element to make the click work
-                const header = discourseHamburger.closest('#site-header') || discourseHamburger.closest('.d-header');
-                if (header) {
-                    const originalDisplay = header.style.display;
-                    header.style.display = 'block';
-                    header.style.visibility = 'hidden';
-
-                    discourseHamburger.click();
-
-                    // Hide it again immediately
-                    setTimeout(() => {
-                        header.style.display = originalDisplay;
-                        header.style.visibility = '';
-                    }, 10);
-                } else {
-                    discourseHamburger.click();
-                }
-            }
-        });
-    }
-
-    // Mobile user menu functionality (right side)
-    if (mobileMenuToggle && mobileOverlay) {
-        mobileMenuToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            const isActive = mobileOverlay.classList.contains('active');
-
-            if (isActive) {
-                mobileOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                mobileOverlay.classList.add('active');
-                mobileMenuToggle.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        });
-
-        mobileOverlay.addEventListener('click', function(e) {
-            if (e.target === mobileOverlay) {
-                mobileOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    }
-
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 991) {
-            if (mobileOverlay && mobileMenuToggle) {
-                mobileOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                document.body.style.overflow = '';
+            const logoImg = logoLink.querySelector('img');
+            if (logoImg) {
+                logoImg.src = 'https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg';
+                logoImg.alt = 'PLCnext Community';
+                logoImg.style.height = '45px';
+                logoImg.style.width = 'auto';
             }
         }
     });
+}
+
+function initializePLCNextHeader() {
+    // Since we're now using the original Discourse header, we don't need custom functionality
+    // The hamburger menu and user menu will work automatically with Discourse's built-in functionality
 }
 
 // Initialize
