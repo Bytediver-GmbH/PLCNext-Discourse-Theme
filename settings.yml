@@ -1,0 +1,55 @@
+plcnext_enable_header:
+  type: bool
+  default: true
+  description:
+    en: "Enable the PLCNext Community header banner"
+    de: "PLCNext Community Header-Banner aktivieren"
+
+plcnext_logo_url:
+  type: string
+  default: "https://www.plcnext.help/assets/plcnext-logo.svg"
+  description:
+    en: "URL for the PLCNext logo image"
+    de: "URL für das PLCNext Logo-Bild"
+
+plcnext_main_link:
+  type: string
+  default: "https://www.plcnext.help"
+  description:
+    en: "Main PLCNext website URL"
+    de: "Haupt-PLCNext Website URL"
+
+plcnext_github_link:
+  type: string
+  default: "https://github.com/PLCNext"
+  description:
+    en: "PLCNext GitHub organization URL"
+    de: "PLCNext GitHub Organisation URL"
+
+plcnext_header_title:
+  type: string
+  default: "PLCNext Community"
+  description:
+    en: "Header title text"
+    de: "Header-Titel Text"
+
+plcnext_header_subtitle:
+  type: string
+  default: "Expertise, Support & Innovation für PLCNext Technology"
+  description:
+    en: "Header subtitle text"
+    de: "Header-Untertitel Text"
+
+plcnext_enable_animations:
+  type: bool
+  default: true
+  description:
+    en: "Enable header animations and effects"
+    de: "Header-Animationen und -Effekte aktivieren"
+
+plcnext_custom_css:
+  type: text
+  default: ""
+  description:
+    en: "Custom CSS to override default styling"
+    de: "Benutzerdefiniertes CSS zum Überschreiben des Standard-Stylings"

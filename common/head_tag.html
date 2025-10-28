@@ -1,0 +1,71 @@
+<!-- PLCNext Community Header Theme - Head Tag -->
+<meta name="theme-name" content="PLCNext Header Theme">
+<meta name="theme-version" content="1.0.0">
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Preload PLCNext logo for better performance -->
+<link rel="preload" href="https://www.plcnext.help/assets/plcnext-logo.svg" as="image">
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Enhance header with smooth animations and interactions
+    const header = document.querySelector('.plcnext-header-banner');
+    if (header) {
+        // Add smooth hover effects for logo
+        const logo = header.querySelector('.plcnext-logo');
+        if (logo) {
+            logo.addEventListener('mouseenter', function() {
+                this.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))';
+            });
+
+            logo.addEventListener('mouseleave', function() {
+                this.style.filter = 'brightness(0) invert(1)';
+            });
+        }
+
+        // Add click tracking for analytics (if needed)
+        const navLinks = header.querySelectorAll('.plcnext-nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const linkText = this.textContent.trim();
+                console.log('PLCNext Header: Clicked', linkText);
+                // Add analytics tracking here if needed
+            });
+        });
+
+        // Responsive menu toggle for very small screens
+        if (window.innerWidth < 480) {
+            const headerText = header.querySelector('.plcnext-header-text h1');
+            if (headerText) {
+                headerText.style.cursor = 'pointer';
+                headerText.addEventListener('click', function() {
+                    const navLinks = header.querySelector('.plcnext-nav-links');
+                    if (navLinks) {
+                        navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+                    }
+                });
+            }
+        }
+    }
+
+    // Add scroll effect for header (optional subtle effect)
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (header) {
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                header.style.transform = 'translateY(-5px)';
+                header.style.opacity = '0.95';
+            } else {
+                // Scrolling up
+                header.style.transform = 'translateY(0)';
+                header.style.opacity = '1';
+            }
+        }
+        lastScrollTop = scrollTop;
+    });
+});
+</script>

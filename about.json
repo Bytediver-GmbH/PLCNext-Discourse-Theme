@@ -1,0 +1,11 @@
+{
+  "name": "PLCNext Header Theme",
+  "about_url": "https://github.com/Bytediver-GmbH/PLCNext-Discourse-Theme",
+  "license_url": "https://github.com/Bytediver-GmbH/PLCNext-Discourse-Theme/blob/master/LICENSE",
+  "authors": "Bytediver GmbH",
+  "theme_version": "1.0.0",
+  "minimum_discourse_version": "3.0.0",
+  "assets": {},
+  "color_schemes": {},
+  "modifiers": {}
+}

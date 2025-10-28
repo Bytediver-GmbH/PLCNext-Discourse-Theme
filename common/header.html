@@ -1,0 +1,32 @@
+<script type="text/x-handlebars" data-template-name="/connectors/site-header/plcnext-header">
+  {{#if themeSettings.plcnext_enable_header}}
+  <div class="plcnext-header-banner {{#unless themeSettings.plcnext_enable_animations}}no-animations{{/unless}}">
+    <div class="container">
+      <div class="plcnext-logo-container">
+        <a href="{{themeSettings.plcnext_main_link}}" target="_blank" class="plcnext-logo-link">
+          <img src="{{themeSettings.plcnext_logo_url}}" alt="PLCNext Technology" class="plcnext-logo">
+        </a>
+      </div>
+      <div class="plcnext-header-text">
+        <h1>{{themeSettings.plcnext_header_title}}</h1>
+        <p>{{themeSettings.plcnext_header_subtitle}}</p>
+      </div>
+      <div class="plcnext-nav-links">
+        <a href="{{themeSettings.plcnext_main_link}}" target="_blank" class="plcnext-nav-link">
+          <i class="fas fa-external-link-alt"></i>
+          PLCNext.help
+        </a>
+        <a href="{{themeSettings.plcnext_github_link}}" target="_blank" class="plcnext-nav-link">
+          <i class="fab fa-github"></i>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+  {{#if themeSettings.plcnext_custom_css}}
+  <style>
+    {{{themeSettings.plcnext_custom_css}}}
+  </style>
+  {{/if}}
+  {{/if}}
+</script>
