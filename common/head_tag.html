@@ -105,22 +105,38 @@ function initializePLCNextHeader() {
     const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
     const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
 
-    // Discourse hamburger menu toggle functionality
+    // Use hidden Discourse header hamburger functionality
     const hamburgerToggle = menuWrapper.querySelector('[data-hamburger]');
     if (hamburgerToggle) {
         hamburgerToggle.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // Find and click the actual Discourse hamburger menu button
-            const discourseHamburger = document.querySelector('.hamburger-dropdown:not([data-hamburger])') ||
-                                     document.querySelector('.btn-hamburger') ||
-                                     document.querySelector('.toggle-hamburger-menu');
+            // Find the hidden Discourse header hamburger button
+            const discourseHamburger = document.querySelector('#site-header .hamburger-dropdown') ||
+                                     document.querySelector('.d-header .hamburger-dropdown') ||
+                                     document.querySelector('#site-header .btn-hamburger') ||
+                                     document.querySelector('.d-header .btn-hamburger') ||
+                                     document.querySelector('#site-header [data-toggle="hamburger-menu"]') ||
+                                     document.querySelector('.d-header [data-toggle="hamburger-menu"]');
 
             if (discourseHamburger) {
-                discourseHamburger.click();
-            } else {
-                // If no hamburger found, create and dispatch a custom event
-                document.body.classList.toggle('hamburger-menu-visible');
+                // Temporarily show the hidden header element to make the click work
+                const header = discourseHamburger.closest('#site-header') || discourseHamburger.closest('.d-header');
+                if (header) {
+                    const originalDisplay = header.style.display;
+                    header.style.display = 'block';
+                    header.style.visibility = 'hidden';
+
+                    discourseHamburger.click();
+
+                    // Hide it again immediately
+                    setTimeout(() => {
+                        header.style.display = originalDisplay;
+                        header.style.visibility = '';
+                    }, 10);
+                } else {
+                    discourseHamburger.click();
+                }
             }
         });
     }
