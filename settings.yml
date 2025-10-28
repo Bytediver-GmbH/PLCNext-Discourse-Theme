@@ -48,8 +48,8 @@ plcnext_enable_animations:
     de: "Header-Animationen und -Effekte aktivieren"
 
 plcnext_custom_css:
-  type: text
+  type: string
   default: ""
   description:
-    en: "Custom CSS to override default styling"
-    de: "Benutzerdefiniertes CSS zum Überschreiben des Standard-Stylings"
+    en: "Custom CSS to override default styling (use textarea in theme editor)"
+    de: "Benutzerdefiniertes CSS zum Überschreiben des Standard-Stylings (Textarea im Theme Editor verwenden)"
