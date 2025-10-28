@@ -151,6 +151,10 @@
     background-color: rgba(0, 152, 161, 0.1);
   }
 
+	&:visited {
+		color: #fff;
+	}
+
   &.nav-link-active {
     color: var(--color-primary);
     background-color: rgba(0, 152, 161, 0.15);
