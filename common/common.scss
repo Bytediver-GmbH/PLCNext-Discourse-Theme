@@ -482,12 +482,34 @@
   }
 }
 
-/* Integration with Discourse */
+/* Integration with Discourse - Hide default header */
 #site-header {
-  .menu-wrapper {
-    position: relative;
-    top: auto;
-  }
+  display: none !important;
+}
+
+.d-header {
+  display: none !important;
+}
+
+.menu-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Adjust body spacing since we're hiding the default header */
+body {
+  padding-top: 0 !important;
+}
+
+.ember-application {
+  padding-top: 0 !important;
+}
+
+/* Ensure our header doesn't overlap content */
+#main-outlet {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 /* Dark mode support */
