@@ -1,52 +1,22 @@
-/* PLCNext Community Header - Exact Recreation */
+/* PLCNext Community Header - Optimized */
 
-/* Using system fonts as per PLCNext Community website */
-
-/* PLCNext Community Color Palette - Exact Colors */
+/* Color Palette */
 :root {
-  --wp--preset--color--primary: #0098A1;
-  --wp--preset--color--plc-black: #202020;
-  --wp--preset--color--gray-100: #F2F4F6;
-  --wp--preset--color--gray-600: #A2A7A9;
-  --wp--preset--color--white: #ffffff;
-
-  /* Theme colors for compatibility */
-  --color-primary: var(--wp--preset--color--primary);
+  --color-primary: #0098A1;
   --color-secondary: #007075;
   --color-accent: #00c4cc;
-  --color-text-dark: var(--wp--preset--color--plc-black);
-  --color-text-light: var(--wp--preset--color--gray-600);
-  --color-text-muted: #999999;
-  --color-white: var(--wp--preset--color--white);
-  --color-gray-light: var(--wp--preset--color--gray-100);
-  --color-gray-medium: #e0e0e0;
-  --color-gray-dark: var(--wp--preset--color--gray-600);
-  --color-border: #d9d9d9;
+  --color-text-dark: #202020;
+  --color-white: #ffffff;
   --color-bg-overlay: rgba(32, 32, 32, 0.8);
-  --color-shadow: rgba(0, 0, 0, 0.1);
+  --color-gray-medium: #e0e0e0;
 
-  /* Typography - Using system fonts like the original */
+  /* Typography */
   --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  /* Spacing */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-
-  /* Breakpoints - Matching original */
-  --breakpoint-mobile: 767.98px;
-  --breakpoint-medium: 991.98px;
-  --breakpoint-large: 1200px;
 }
 
-/* Reset and base styles */
+/* Reset */
 .menu-wrapper * {
   box-sizing: border-box;
   margin: 0;
@@ -75,7 +45,7 @@
 }
 
 .header-container {
-  max-width: 1382px; // Forum width
+  max-width: 1382px;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
@@ -195,7 +165,6 @@
   }
 }
 
-
 /* Header Controls */
 .header-controls {
   display: flex;
@@ -232,6 +201,18 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230098A1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
     }
   }
+}
+
+/* Icon Styles */
+.icon-search::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .search-toggle {
@@ -278,69 +259,6 @@
   }
 }
 
-/* Search Overlay */
-.search-overlay {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  width: 300px;
-  background: var(--color-white);
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  border: 1px solid var(--color-border);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  z-index: 1001;
-  margin-top: 8px;
-
-  &.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-}
-
-.search-container {
-  padding: var(--spacing-md);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.search-input {
-  flex: 1;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  padding: var(--spacing-sm);
-  font-family: var(--font-primary);
-  font-size: 0.9rem;
-
-  &:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px rgba(0, 107, 179, 0.1);
-  }
-}
-
-.search-close {
-  background: none;
-  border: none;
-  padding: var(--spacing-xs);
-  cursor: pointer;
-  color: var(--color-text-muted);
-
-  &:hover {
-    color: var(--color-text-dark);
-  }
-
-  .icon-close::before {
-    content: "✕";
-    font-size: 1rem;
-  }
-}
-
 /* Mobile Navigation */
 .mobile-overlay {
   position: fixed;
@@ -374,10 +292,14 @@
   transform: translateX(100%);
   transition: transform 0.3s ease;
   overflow-y: auto;
+
+  @media (max-width: 767.98px) {
+    width: 280px;
+  }
 }
 
 .mobile-navigation {
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: 3rem 1.5rem;
 }
 
 .mobile-nav-menu {
@@ -392,7 +314,7 @@
 
     a {
       display: block;
-      padding: var(--spacing-md) 0;
+      padding: 1.5rem 0;
       color: var(--color-text-dark);
       text-decoration: none;
       font-weight: var(--font-weight-semibold);
@@ -405,91 +327,20 @@
   }
 }
 
-/* Responsive adjustments */
-@media (max-width: 767.98px) {
-  .header-container {
-    height: 60px;
-    padding: 0 var(--spacing-sm);
-  }
-
-  .logo-section {
-    margin-right: var(--spacing-sm);
-
-    .logo .logo-image {
-      height: 35px;
-    }
-  }
-
-  .mobile-nav-content {
-    width: 280px;
-  }
-}
-
-@media (min-width: 992px) {
-  .header-container {
-    padding: 0 var(--spacing-lg);
-  }
-
-  .nav-menu {
-    gap: var(--spacing-md);
-  }
-}
-
-/* Integration with Discourse - Hide default header */
-#site-header {
-  display: none !important;
-}
-
+/* Integration with Discourse */
+#site-header,
 .d-header {
   display: none !important;
 }
 
-.menu-wrapper {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-/* Adjust body spacing since we're hiding the default header */
-body {
-  padding-top: 0 !important;
-}
-
-.ember-application {
-  padding-top: 0 !important;
-}
-
-/* Ensure our header doesn't overlap content */
+body,
+.ember-application,
 #main-outlet {
-  margin-top: 0 !important;
   padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
-/* Dark mode support */
-.dark-mode {
-  .menu-wrapper {
-    background: #2c2c2c;
-    border-bottom-color: #444;
-    color: #fff;
-  }
-
-  .nav-link {
-    color: #fff;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-  }
-
-  .submenu-overlay,
-  .search-overlay,
-  .mobile-nav-content {
-    background: #2c2c2c;
-    border-color: #444;
-  }
-}
-
-/* Animation enhancements */
+/* Animation for initial load */
 .menu-wrapper {
   &:not(.no-animations) {
     .nav-item {

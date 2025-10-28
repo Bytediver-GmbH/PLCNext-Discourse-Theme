@@ -1,8 +1,6 @@
-<!-- PLCNext Community Header Theme - Head Tag -->
+<!-- PLCNext Community Header Theme -->
 <meta name="theme-name" content="PLCNext Community Header Theme">
 <meta name="theme-version" content="2.0.0">
-
-<!-- Titillium Web font is imported in CSS -->
 
 <!-- PLCNext Header Template -->
 <template id="plcnext-header-template">
@@ -11,11 +9,11 @@
       <div class="header-container">
         <div class="logo-section">
           <a href="https://www.plcnext-community.net" class="logo">
-            <img src="https://www.plcnext-community.net//app/themes/plcnextcommunity/static/images/logo-plc-next.svg" alt="PLCnext Community" class="logo-image">
+            <img src="https://www.plcnext-community.net/app/themes/plcnextcommunity/static/images/logo-plc-next.svg" alt="PLCnext Community" class="logo-image">
           </a>
         </div>
 
-        <nav class="main-navigation" data-navigation>
+        <nav class="main-navigation">
           <ul class="nav-menu">
             <li class="nav-item">
               <a href="https://www.plcnext-community.net/infocenter/news" class="nav-link">News & Articles</a>
@@ -38,7 +36,7 @@
           </ul>
         </nav>
 
-        <div class="header-controls" data-controls>
+        <div class="header-controls">
           <a href="https://www.plcnext-community.net/?s=" target="_blank" class="search-toggle">
             <i class="icon-search"></i>
           </a>
@@ -60,7 +58,7 @@
             <li><a href="https://www.plcnext-community.net/learning">Learning</a></li>
             <li><a href="https://www.plcnext-community.net/makers-blog">Maker's Blog</a></li>
             <li><a href="/">Forum</a></li>
-            <li><a href="https://www.plcnext-community.net/getting-started">Getting started</a></li>
+            <li><a href="https://www.plcnext-community.net/getting-started-with-plcnext-technology/#learn-more">Getting started</a></li>
           </ul>
         </nav>
       </div>
@@ -70,178 +68,77 @@
 
 <script>
 function insertPLCNextHeader() {
-    // Remove any existing header first
     const existingHeader = document.querySelector('[data-menu-wrapper]');
-    if (existingHeader) {
-        existingHeader.remove();
-    }
+    if (existingHeader) existingHeader.remove();
 
-    // Get the template and clone it
     const template = document.getElementById('plcnext-header-template');
-    if (!template) {
-        console.error('PLCNext header template not found');
-        return;
-    }
+    if (!template) return;
 
     const headerContent = template.content.cloneNode(true);
-
-    // Find the best insertion point (top of body)
     const body = document.body;
-    const firstChild = body.firstChild;
 
-    if (firstChild) {
-        body.insertBefore(headerContent, firstChild);
+    if (body.firstChild) {
+        body.insertBefore(headerContent, body.firstChild);
     } else {
         body.appendChild(headerContent);
     }
 
-    console.log('PLCNext header inserted successfully');
-
-    // Initialize functionality after insertion
-    setTimeout(() => {
-        initializePLCNextHeader();
-    }, 100);
+    initializePLCNextHeader();
 }
 
 function initializePLCNextHeader() {
     const menuWrapper = document.querySelector('[data-menu-wrapper]');
-    if (!menuWrapper) {
-        console.error('PLCNext menu wrapper not found after insertion');
-        return;
-    }
+    if (!menuWrapper) return;
 
-    // Elements
     const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
     const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
 
-    // Mobile menu functionality
     if (mobileMenuToggle && mobileOverlay) {
-        const newMobileToggle = mobileMenuToggle.cloneNode(true);
-        mobileMenuToggle.parentNode.replaceChild(newMobileToggle, mobileMenuToggle);
-
-        newMobileToggle.addEventListener('click', function(e) {
+        mobileMenuToggle.addEventListener('click', function(e) {
             e.preventDefault();
-            e.stopPropagation();
-
             const isActive = mobileOverlay.classList.contains('active');
 
             if (isActive) {
                 mobileOverlay.classList.remove('active');
-                newMobileToggle.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
                 document.body.style.overflow = '';
             } else {
                 mobileOverlay.classList.add('active');
-                newMobileToggle.classList.add('active');
+                mobileMenuToggle.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
         });
 
-        // Close mobile menu on overlay click
         mobileOverlay.addEventListener('click', function(e) {
             if (e.target === mobileOverlay) {
                 mobileOverlay.classList.remove('active');
-                newMobileToggle.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
                 document.body.style.overflow = '';
             }
         });
     }
 
-    // Handle window resize
     window.addEventListener('resize', function() {
-        // Close mobile menu on resize to desktop
         if (window.innerWidth > 991) {
             mobileOverlay.classList.remove('active');
-            document.querySelector('[data-burger]').classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
             document.body.style.overflow = '';
         }
     });
-
-    // Add loading animation
-    menuWrapper.style.opacity = '0';
-    menuWrapper.style.transform = 'translateY(-20px)';
-
-    setTimeout(function() {
-        menuWrapper.style.transition = 'all 0.6s ease';
-        menuWrapper.style.opacity = '1';
-        menuWrapper.style.transform = 'translateY(0)';
-    }, 100);
-
-    console.log('PLCNext Community Header initialized successfully');
 }
 
-// Initialize header on page load
-document.addEventListener('DOMContentLoaded', function() {
-    insertPLCNextHeader();
-});
+// Initialize
+document.addEventListener('DOMContentLoaded', insertPLCNextHeader);
+if (document.readyState !== 'loading') insertPLCNextHeader();
 
-// Also try to initialize immediately if DOM is already ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', insertPLCNextHeader);
-} else {
-    insertPLCNextHeader();
-}
-
-// Reinitialize on page changes (for SPA behavior)
+// Reinitialize on page changes for SPA
 let lastUrl = location.href;
 new MutationObserver(() => {
     const url = location.href;
     if (url !== lastUrl) {
         lastUrl = url;
-        setTimeout(() => {
-            insertPLCNextHeader();
-        }, 500);
+        setTimeout(insertPLCNextHeader, 300);
     }
 }).observe(document, { subtree: true, childList: true });
-
-// Analytics tracking (optional)
-function trackHeaderClick(element, action) {
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'click', {
-            'event_category': 'Header Navigation',
-            'event_label': element,
-            'value': action
-        });
-    }
-}
 </script>
 
-<!-- Custom CSS for icon fonts -->
-<style>
-.icon-search::before {
-    content: "";
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.icon-close::before {
-    content: "";
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'%3E%3C/path%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-/* Ensure proper font loading */
-.menu-wrapper {
-    font-display: swap;
-}
-
-/* Preload critical resources */
-.menu-wrapper::before {
-    content: '';
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-    background: url('https://www.plcnext-community.net//app/themes/plcnextcommunity/static/images/logo-plc-next.svg') no-repeat;
-    width: 1px;
-    height: 1px;
-}
-</style>
