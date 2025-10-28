@@ -1,71 +1,256 @@
 <!-- PLCNext Community Header Theme - Head Tag -->
-<meta name="theme-name" content="PLCNext Header Theme">
-<meta name="theme-version" content="1.0.0">
+<meta name="theme-name" content="PLCNext Community Header Theme">
+<meta name="theme-version" content="2.0.0">
 
-<!-- Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<!-- Preload PLCNext logo for better performance -->
-<link rel="preload" href="https://www.plcnext.help/assets/plcnext-logo.svg" as="image">
+<!-- Titillium Web font is imported in CSS -->
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Enhance header with smooth animations and interactions
-    const header = document.querySelector('.plcnext-header-banner');
-    if (header) {
-        // Add smooth hover effects for logo
-        const logo = header.querySelector('.plcnext-logo');
-        if (logo) {
-            logo.addEventListener('mouseenter', function() {
-                this.style.filter = 'brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))';
-            });
+    // PLCNext Community Menu Functionality
+    const menuWrapper = document.querySelector('[data-menu-wrapper]');
+    if (!menuWrapper) return;
 
-            logo.addEventListener('mouseleave', function() {
-                this.style.filter = 'brightness(0) invert(1)';
+    // Elements
+    const searchToggle = menuWrapper.querySelector('[data-search-toggle]');
+    const searchOverlay = menuWrapper.querySelector('[data-search-overlay]');
+    const searchClose = menuWrapper.querySelector('[data-search-close]');
+    const mobileMenuToggle = menuWrapper.querySelector('[data-burger]');
+    const mobileOverlay = menuWrapper.querySelector('[data-mobile-nav]');
+    const submenuItems = menuWrapper.querySelectorAll('[data-submenu]');
+
+    // Search functionality
+    if (searchToggle && searchOverlay) {
+        searchToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            searchOverlay.classList.toggle('active');
+
+            if (searchOverlay.classList.contains('active')) {
+                const searchInput = searchOverlay.querySelector('.search-input');
+                if (searchInput) {
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            }
+        });
+
+        if (searchClose) {
+            searchClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                searchOverlay.classList.remove('active');
             });
         }
 
-        // Add click tracking for analytics (if needed)
-        const navLinks = header.querySelectorAll('.plcnext-nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const linkText = this.textContent.trim();
-                console.log('PLCNext Header: Clicked', linkText);
-                // Add analytics tracking here if needed
-            });
+        // Close search on outside click
+        document.addEventListener('click', function(e) {
+            if (!searchOverlay.contains(e.target) && !searchToggle.contains(e.target)) {
+                searchOverlay.classList.remove('active');
+            }
         });
 
-        // Responsive menu toggle for very small screens
-        if (window.innerWidth < 480) {
-            const headerText = header.querySelector('.plcnext-header-text h1');
-            if (headerText) {
-                headerText.style.cursor = 'pointer';
-                headerText.addEventListener('click', function() {
-                    const navLinks = header.querySelector('.plcnext-nav-links');
-                    if (navLinks) {
-                        navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+        // Handle search input
+        const searchInput = searchOverlay.querySelector('.search-input');
+        if (searchInput) {
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const query = this.value.trim();
+                    if (query) {
+                        // Redirect to forum search
+                        window.location.href = '/search?q=' + encodeURIComponent(query);
                     }
-                });
-            }
+                }
+
+                if (e.key === 'Escape') {
+                    searchOverlay.classList.remove('active');
+                }
+            });
         }
     }
 
-    // Add scroll effect for header (optional subtle effect)
-    let lastScrollTop = 0;
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (header) {
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Scrolling down
-                header.style.transform = 'translateY(-5px)';
-                header.style.opacity = '0.95';
+    // Mobile menu functionality
+    if (mobileMenuToggle && mobileOverlay) {
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isActive = mobileOverlay.classList.contains('active');
+
+            if (isActive) {
+                mobileOverlay.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                document.body.style.overflow = '';
             } else {
-                // Scrolling up
-                header.style.transform = 'translateY(0)';
-                header.style.opacity = '1';
+                mobileOverlay.classList.add('active');
+                mobileMenuToggle.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        // Close mobile menu on overlay click
+        mobileOverlay.addEventListener('click', function(e) {
+            if (e.target === mobileOverlay) {
+                mobileOverlay.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close mobile menu on escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && mobileOverlay.classList.contains('active')) {
+                mobileOverlay.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // Submenu hover functionality (desktop only)
+    submenuItems.forEach(function(item) {
+        const submenuOverlay = item.querySelector('[data-overlay]');
+        if (!submenuOverlay) return;
+
+        let hoverTimeout;
+
+        item.addEventListener('mouseenter', function() {
+            if (window.innerWidth > 1023) {
+                clearTimeout(hoverTimeout);
+                submenuOverlay.style.opacity = '1';
+                submenuOverlay.style.visibility = 'visible';
+                submenuOverlay.style.transform = 'translateX(-50%) translateY(0)';
+            }
+        });
+
+        item.addEventListener('mouseleave', function() {
+            if (window.innerWidth > 1023) {
+                hoverTimeout = setTimeout(function() {
+                    submenuOverlay.style.opacity = '0';
+                    submenuOverlay.style.visibility = 'hidden';
+                    submenuOverlay.style.transform = 'translateX(-50%) translateY(-10px)';
+                }, 150);
+            }
+        });
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        // Close mobile menu on resize to desktop
+        if (window.innerWidth > 1023) {
+            mobileOverlay.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Hide submenus on mobile
+        if (window.innerWidth <= 1023) {
+            submenuItems.forEach(function(item) {
+                const submenuOverlay = item.querySelector('[data-overlay]');
+                if (submenuOverlay) {
+                    submenuOverlay.style.opacity = '0';
+                    submenuOverlay.style.visibility = 'hidden';
+                }
+            });
+        }
+    });
+
+    // Smooth scrolling for anchor links
+    menuWrapper.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('#')) {
+            e.preventDefault();
+            const targetId = e.target.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                const headerHeight = menuWrapper.offsetHeight;
+                const targetPosition = targetElement.offsetTop - headerHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
             }
         }
-        lastScrollTop = scrollTop;
     });
+
+    // Sticky header effect on scroll
+    let lastScrollTop = 0;
+    let isScrolling = false;
+
+    function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down
+            menuWrapper.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            menuWrapper.style.transform = 'translateY(0)';
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        isScrolling = false;
+    }
+
+    // Throttled scroll handler
+    window.addEventListener('scroll', function() {
+        if (!isScrolling) {
+            window.requestAnimationFrame(handleScroll);
+            isScrolling = true;
+        }
+    });
+
+    // Add loading animation
+    menuWrapper.style.opacity = '0';
+    menuWrapper.style.transform = 'translateY(-20px)';
+
+    setTimeout(function() {
+        menuWrapper.style.transition = 'all 0.6s ease';
+        menuWrapper.style.opacity = '1';
+        menuWrapper.style.transform = 'translateY(0)';
+    }, 100);
+
+    console.log('PLCNext Community Header initialized successfully');
 });
+
+// Analytics tracking (optional)
+function trackHeaderClick(element, action) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+            'event_category': 'Header Navigation',
+            'event_label': element,
+            'value': action
+        });
+    }
+}
 </script>
+
+<!-- Custom CSS for icon fonts -->
+<style>
+.icon-search::before {
+    content: "🔍";
+    font-style: normal;
+    font-size: 16px;
+}
+
+.icon-close::before {
+    content: "✕";
+    font-style: normal;
+    font-size: 14px;
+}
+
+/* Ensure proper font loading */
+.menu-wrapper {
+    font-display: swap;
+}
+
+/* Preload critical resources */
+.menu-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    background: url('https://www.plcnext-community.net/assets/images/plcnext-logo.svg') no-repeat;
+    width: 1px;
+    height: 1px;
+}
+</style>
