@@ -4,11 +4,160 @@
 
 <!-- Titillium Web font is imported in CSS -->
 
+<!-- PLCNext Header Template -->
+<template id="plcnext-header-template">
+  <div class="menu-wrapper" data-menu-wrapper>
+    <header class="header-main">
+      <div class="header-container">
+        <div class="logo-section">
+          <a href="https://www.plcnext-community.net" class="logo">
+            <img src="https://www.plcnext-community.net/assets/images/plcnext-logo.svg" alt="PLCnext Community" class="logo-image">
+          </a>
+        </div>
+
+        <nav class="main-navigation" data-navigation>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="https://www.plcnext-community.net/infocenter/news" class="nav-link">News & Articles</a>
+            </li>
+            <li class="nav-item has-submenu" data-submenu>
+              <a href="https://www.plcnext-community.net/about-plcnext-technology" class="nav-link">About PLCnext Technology</a>
+              <div class="submenu-overlay" data-overlay>
+                <div class="submenu-content">
+                  <div class="submenu-column">
+                    <h4>Technology</h4>
+                    <ul>
+                      <li><a href="https://www.plcnext-community.net/about-plcnext-technology/overview">Overview</a></li>
+                      <li><a href="https://www.plcnext-community.net/about-plcnext-technology/programming">Programming</a></li>
+                      <li><a href="https://www.plcnext-community.net/about-plcnext-technology/connectivity">Connectivity</a></li>
+                    </ul>
+                  </div>
+                  <div class="submenu-column">
+                    <h4>Products</h4>
+                    <ul>
+                      <li><a href="https://www.plcnext-community.net/about-plcnext-technology/controllers">Controllers</a></li>
+                      <li><a href="https://www.plcnext-community.net/about-plcnext-technology/software">Software</a></li>
+                      <li><a href="https://www.plcnext-community.net/about-plcnext-technology/accessories">Accessories</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item has-submenu" data-submenu>
+              <a href="https://www.plcnext-community.net/learning" class="nav-link">Learning</a>
+              <div class="submenu-overlay" data-overlay>
+                <div class="submenu-content">
+                  <div class="submenu-column">
+                    <h4>Getting Started</h4>
+                    <ul>
+                      <li><a href="https://www.plcnext-community.net/learning/getting-started">Quick Start</a></li>
+                      <li><a href="https://www.plcnext-community.net/learning/tutorials">Tutorials</a></li>
+                      <li><a href="https://www.plcnext-community.net/learning/examples">Examples</a></li>
+                    </ul>
+                  </div>
+                  <div class="submenu-column">
+                    <h4>Resources</h4>
+                    <ul>
+                      <li><a href="https://www.plcnext-community.net/learning/documentation">Documentation</a></li>
+                      <li><a href="https://www.plcnext-community.net/learning/videos">Videos</a></li>
+                      <li><a href="https://www.plcnext-community.net/learning/webinars">Webinars</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="https://www.plcnext-community.net/makers-blog" class="nav-link">Maker's Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="/" class="nav-link nav-link-active">Forum</a>
+            </li>
+            <li class="nav-item">
+              <a href="https://www.plcnext-community.net/getting-started" class="nav-link nav-link-cta">Getting started</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-controls" data-controls>
+          <button class="search-toggle" data-search-toggle>
+            <i class="icon-search"></i>
+          </button>
+          <button class="mobile-menu-toggle" data-burger>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+          </button>
+        </div>
+
+        <div class="search-overlay" data-search-overlay>
+          <div class="search-container">
+            <input type="search" placeholder="Search..." class="search-input">
+            <button class="search-close" data-search-close>
+              <i class="icon-close"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-overlay" data-mobile-nav>
+      <div class="mobile-nav-content">
+        <nav class="mobile-navigation">
+          <ul class="mobile-nav-menu">
+            <li><a href="https://www.plcnext-community.net/infocenter/news">News & Articles</a></li>
+            <li><a href="https://www.plcnext-community.net/about-plcnext-technology">About PLCnext Technology</a></li>
+            <li><a href="https://www.plcnext-community.net/learning">Learning</a></li>
+            <li><a href="https://www.plcnext-community.net/makers-blog">Maker's Blog</a></li>
+            <li><a href="/">Forum</a></li>
+            <li><a href="https://www.plcnext-community.net/getting-started">Getting started</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // PLCNext Community Menu Functionality
+function insertPLCNextHeader() {
+    // Remove any existing header first
+    const existingHeader = document.querySelector('[data-menu-wrapper]');
+    if (existingHeader) {
+        existingHeader.remove();
+    }
+
+    // Get the template and clone it
+    const template = document.getElementById('plcnext-header-template');
+    if (!template) {
+        console.error('PLCNext header template not found');
+        return;
+    }
+
+    const headerContent = template.content.cloneNode(true);
+
+    // Find the best insertion point (top of body)
+    const body = document.body;
+    const firstChild = body.firstChild;
+
+    if (firstChild) {
+        body.insertBefore(headerContent, firstChild);
+    } else {
+        body.appendChild(headerContent);
+    }
+
+    console.log('PLCNext header inserted successfully');
+
+    // Initialize functionality after insertion
+    setTimeout(() => {
+        initializePLCNextHeader();
+    }, 100);
+}
+
+function initializePLCNextHeader() {
     const menuWrapper = document.querySelector('[data-menu-wrapper]');
-    if (!menuWrapper) return;
+    if (!menuWrapper) {
+        console.error('PLCNext menu wrapper not found after insertion');
+        return;
+    }
 
     // Elements
     const searchToggle = menuWrapper.querySelector('[data-search-toggle]');
@@ -210,7 +359,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
 
     console.log('PLCNext Community Header initialized successfully');
+}
+
+// Initialize header on page load
+document.addEventListener('DOMContentLoaded', function() {
+    insertPLCNextHeader();
 });
+
+// Also try to initialize immediately if DOM is already ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', insertPLCNextHeader);
+} else {
+    insertPLCNextHeader();
+}
+
+// Reinitialize on page changes (for SPA behavior)
+let lastUrl = location.href;
+new MutationObserver(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+        lastUrl = url;
+        setTimeout(() => {
+            insertPLCNextHeader();
+        }, 500);
+    }
+}).observe(document, { subtree: true, childList: true });
 
 // Analytics tracking (optional)
 function trackHeaderClick(element, action) {
