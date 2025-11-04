@@ -7,22 +7,22 @@
   <nav class="main-navigation">
     <ul class="nav-menu">
       <li class="nav-item">
-        <a href="{{header_news_url}}" class="nav-link">{{header_news_text}}</a>
+        <a href="<%= theme_setting('header_news_url') %>" class="nav-link"><%= theme_setting('header_news_text') %></a>
       </li>
       <li class="nav-item">
-        <a href="{{header_about_url}}" class="nav-link">{{header_about_text}}</a>
+        <a href="<%= theme_setting('header_about_url') %>" class="nav-link"><%= theme_setting('header_about_text') %></a>
       </li>
       <li class="nav-item">
-        <a href="{{header_learning_url}}" class="nav-link">{{header_learning_text}}</a>
+        <a href="<%= theme_setting('header_learning_url') %>" class="nav-link"><%= theme_setting('header_learning_text') %></a>
       </li>
       <li class="nav-item">
-        <a href="{{header_blog_url}}" class="nav-link">{{header_blog_text}}</a>
+        <a href="<%= theme_setting('header_blog_url') %>" class="nav-link"><%= theme_setting('header_blog_text') %></a>
       </li>
       <li class="nav-item">
-        <a href="/" class="nav-link">{{header_forum_text}}</a>
+        <a href="/" class="nav-link"><%= theme_setting('header_forum_text') %></a>
       </li>
       <li class="nav-item">
-        <a href="{{header_getting_started_url}}" class="nav-link nav-link-cta">{{header_getting_started_text}}</a>
+        <a href="<%= theme_setting('header_getting_started_url') %>" class="nav-link nav-link-cta"><%= theme_setting('header_getting_started_text') %></a>
       </li>
     </ul>
   </nav>
@@ -33,12 +33,12 @@
   <footer class="plcnext-footer" id="plcnext-footer">
     <div class="footer-container">
       <nav class="footer-navigation">
-        <a href="{{footer_legal_url}}" class="footer-link">{{footer_legal_text}}</a>
-        <a href="{{footer_site_notice_url}}" class="footer-link">{{footer_site_notice_text}}</a>
-        <a href="{{footer_privacy_url}}" class="footer-link">{{footer_privacy_text}}</a>
+        <a href="<%= theme_setting('footer_legal_url') %>" class="footer-link"><%= theme_setting('footer_legal_text') %></a>
+        <a href="<%= theme_setting('footer_site_notice_url') %>" class="footer-link"><%= theme_setting('footer_site_notice_text') %></a>
+        <a href="<%= theme_setting('footer_privacy_url') %>" class="footer-link"><%= theme_setting('footer_privacy_text') %></a>
       </nav>
 	    <div class="footer-logo">
-		    <a href="{{footer_phoenix_url}}">
+		    <a href="<%= theme_setting('footer_phoenix_url') %>">
 			    <img src="https://www.plcnext-community.net//app/themes/plcnextcommunity/static/images/logo-phoenix-contact.svg" alt="Phoenix Contact" class="footer-logo-image">
 		    </a>
 	    </div>
@@ -47,28 +47,6 @@
 </template>
 
 <script>
-// Get theme settings
-const settings = {
-    header_news_url: '<%= theme_setting("header_news_url") %>',
-    header_news_text: '<%= theme_setting("header_news_text") %>',
-    header_about_url: '<%= theme_setting("header_about_url") %>',
-    header_about_text: '<%= theme_setting("header_about_text") %>',
-    header_learning_url: '<%= theme_setting("header_learning_url") %>',
-    header_learning_text: '<%= theme_setting("header_learning_text") %>',
-    header_blog_url: '<%= theme_setting("header_blog_url") %>',
-    header_blog_text: '<%= theme_setting("header_blog_text") %>',
-    header_forum_text: '<%= theme_setting("header_forum_text") %>',
-    header_getting_started_url: '<%= theme_setting("header_getting_started_url") %>',
-    header_getting_started_text: '<%= theme_setting("header_getting_started_text") %>',
-    footer_legal_url: '<%= theme_setting("footer_legal_url") %>',
-    footer_legal_text: '<%= theme_setting("footer_legal_text") %>',
-    footer_site_notice_url: '<%= theme_setting("footer_site_notice_url") %>',
-    footer_site_notice_text: '<%= theme_setting("footer_site_notice_text") %>',
-    footer_privacy_url: '<%= theme_setting("footer_privacy_url") %>',
-    footer_privacy_text: '<%= theme_setting("footer_privacy_text") %>',
-    footer_phoenix_url: '<%= theme_setting("footer_phoenix_url") %>'
-};
-
 function insertPLCNextHeader() {
     // Wait for Discourse header to be available
     const discourseHeader = document.querySelector('#site-header') || document.querySelector('.d-header');
@@ -85,25 +63,8 @@ function insertPLCNextHeader() {
     const template = document.getElementById('plcnext-header-template');
     if (!template) return;
 
-    let templateHTML = template.innerHTML;
-
-    // Replace placeholders with theme settings
-    templateHTML = templateHTML
-        .replace(/\{\{header_news_url\}\}/g, settings.header_news_url)
-        .replace(/\{\{header_news_text\}\}/g, settings.header_news_text)
-        .replace(/\{\{header_about_url\}\}/g, settings.header_about_url)
-        .replace(/\{\{header_about_text\}\}/g, settings.header_about_text)
-        .replace(/\{\{header_learning_url\}\}/g, settings.header_learning_url)
-        .replace(/\{\{header_learning_text\}\}/g, settings.header_learning_text)
-        .replace(/\{\{header_blog_url\}\}/g, settings.header_blog_url)
-        .replace(/\{\{header_blog_text\}\}/g, settings.header_blog_text)
-        .replace(/\{\{header_forum_text\}\}/g, settings.header_forum_text)
-        .replace(/\{\{header_getting_started_url\}\}/g, settings.header_getting_started_url)
-        .replace(/\{\{header_getting_started_text\}\}/g, settings.header_getting_started_text);
-
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = templateHTML;
-    const plcnextNav = tempDiv.querySelector('.main-navigation');
+    const headerContent = template.content.cloneNode(true);
+    const plcnextNav = headerContent.querySelector('.main-navigation');
 
     if (plcnextNav) {
         plcnextNav.classList.add('plcnext-navigation');
@@ -183,21 +144,7 @@ function insertPLCNextFooter() {
     const template = document.getElementById('plcnext-footer-template');
     if (!template) return;
 
-    let templateHTML = template.innerHTML;
-
-    // Replace placeholders with theme settings
-    templateHTML = templateHTML
-        .replace(/\{\{footer_legal_url\}\}/g, settings.footer_legal_url)
-        .replace(/\{\{footer_legal_text\}\}/g, settings.footer_legal_text)
-        .replace(/\{\{footer_site_notice_url\}\}/g, settings.footer_site_notice_url)
-        .replace(/\{\{footer_site_notice_text\}\}/g, settings.footer_site_notice_text)
-        .replace(/\{\{footer_privacy_url\}\}/g, settings.footer_privacy_url)
-        .replace(/\{\{footer_privacy_text\}\}/g, settings.footer_privacy_text)
-        .replace(/\{\{footer_phoenix_url\}\}/g, settings.footer_phoenix_url);
-
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = templateHTML;
-    const footerContent = tempDiv.firstElementChild;
+    const footerContent = template.content.cloneNode(true);
 
     // Insert footer at the very end of the body, after all Discourse content
     document.body.appendChild(footerContent);
