@@ -28,6 +28,22 @@
   </nav>
 </template>
 
+<!-- PLCNext Footer Template -->
+<template id="plcnext-footer-template">
+  <footer class="plcnext-footer" id="plcnext-footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="https://www.plcnext-community.net//app/themes/plcnextcommunity/static/images/logo-phoenix-contact.svg" alt="Phoenix Contact" class="footer-logo-image">
+      </div>
+      <nav class="footer-navigation">
+        <a href="https://www.plcnext-community.net/legalinformation/" class="footer-link">Legal information</a>
+        <a href="https://www.phoenixcontact.com/en-pc/site-notice" class="footer-link">Site notice</a>
+        <a href="https://www.phoenixcontact.com/en-pc/legal-information/data-privacy" class="footer-link">Data privacy</a>
+      </nav>
+    </div>
+  </footer>
+</template>
+
 <script>
 function insertPLCNextHeader() {
     // Wait for Discourse header to be available
@@ -71,6 +87,9 @@ function insertPLCNextHeader() {
     // Replace logo
     replaceLogo();
 
+    // Insert footer
+    insertPLCNextFooter();
+
     initializePLCNextHeader();
 }
 
@@ -112,6 +131,67 @@ function replaceLogo() {
             }
         });
     });
+}
+
+function insertPLCNextFooter() {
+    // Remove existing footer
+    const existingFooter = document.querySelector('#plcnext-footer');
+    if (existingFooter) existingFooter.remove();
+
+    // Add PLCNext footer
+    const template = document.getElementById('plcnext-footer-template');
+    if (!template) return;
+
+    const footerContent = template.content.cloneNode(true);
+    document.body.appendChild(footerContent);
+
+    // Initialize scroll behavior
+    initializeFooterScrollBehavior();
+}
+
+function initializeFooterScrollBehavior() {
+    let lastScrollTop = 0;
+    let scrollDirection = '';
+    const footer = document.getElementById('plcnext-footer');
+
+    if (!footer) return;
+
+    // Initially hide footer
+    footer.classList.add('hidden');
+
+    function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            // Scrolling down
+            if (scrollDirection !== 'down') {
+                scrollDirection = 'down';
+                footer.classList.remove('hidden');
+                footer.classList.add('visible');
+            }
+        } else {
+            // Scrolling up
+            if (scrollDirection !== 'up') {
+                scrollDirection = 'up';
+                footer.classList.remove('visible');
+                footer.classList.add('hidden');
+            }
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    }
+
+    // Throttle scroll events for better performance
+    let ticking = false;
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(handleScroll);
+            ticking = true;
+            setTimeout(() => { ticking = false; }, 100);
+        }
+    }
+
+    window.addEventListener('scroll', requestTick);
 }
 
 function initializePLCNextHeader() {
