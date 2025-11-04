@@ -1,55 +1,128 @@
-plcnext_enable_header:
-  type: bool
-  default: true
-  description:
-    en: "Enable the PLCNext Community header banner"
-    de: "PLCNext Community Header-Banner aktivieren"
-
-plcnext_logo_url:
+# Header Navigation URLs
+header_news_url:
   type: string
-  default: "https://www.plcnext.help/assets/plcnext-logo.svg"
+  default: "https://www.plcnext-community.net/infocenter/news"
   description:
-    en: "URL for the PLCNext logo image"
-    de: "URL für das PLCNext Logo-Bild"
+    en: "URL for News & Articles"
+    de: "URL für News & Articles"
 
-plcnext_main_link:
+header_about_url:
   type: string
-  default: "https://www.plcnext.help"
+  default: "https://www.plcnext-community.net/about-plcnext-technology"
   description:
-    en: "Main PLCNext website URL"
-    de: "Haupt-PLCNext Website URL"
+    en: "URL for About PLCnext Technology"
+    de: "URL für About PLCnext Technology"
 
-plcnext_github_link:
+header_learning_url:
   type: string
-  default: "https://github.com/PLCNext"
+  default: "https://www.plcnext-community.net/learning"
   description:
-    en: "PLCNext GitHub organization URL"
-    de: "PLCNext GitHub Organisation URL"
+    en: "URL for Learning"
+    de: "URL für Learning"
 
-plcnext_header_title:
+header_blog_url:
   type: string
-  default: "PLCNext Community"
+  default: "https://www.plcnext-community.net/makers-blog"
   description:
-    en: "Header title text"
-    de: "Header-Titel Text"
+    en: "URL for Maker's Blog"
+    de: "URL für Maker's Blog"
 
-plcnext_header_subtitle:
+header_getting_started_url:
   type: string
-  default: "Expertise, Support & Innovation für PLCNext Technology"
+  default: "https://www.plcnext-community.net/getting-started-with-plcnext-technology/#learn-more"
   description:
-    en: "Header subtitle text"
-    de: "Header-Untertitel Text"
+    en: "URL for Getting Started"
+    de: "URL für Getting Started"
 
-plcnext_enable_animations:
-  type: bool
-  default: true
-  description:
-    en: "Enable header animations and effects"
-    de: "Header-Animationen und -Effekte aktivieren"
-
-plcnext_custom_css:
+# Header Navigation Texts
+header_news_text:
   type: string
-  default: ""
+  default: "News & Articles"
   description:
-    en: "Custom CSS to override default styling (use textarea in theme editor)"
-    de: "Benutzerdefiniertes CSS zum Überschreiben des Standard-Stylings (Textarea im Theme Editor verwenden)"
+    en: "Text for News & Articles link"
+    de: "Text für News & Articles Link"
+
+header_about_text:
+  type: string
+  default: "About PLCnext Technology"
+  description:
+    en: "Text for About PLCnext Technology link"
+    de: "Text für About PLCnext Technology Link"
+
+header_learning_text:
+  type: string
+  default: "Learning"
+  description:
+    en: "Text for Learning link"
+    de: "Text für Learning Link"
+
+header_blog_text:
+  type: string
+  default: "Maker's Blog"
+  description:
+    en: "Text for Maker's Blog link"
+    de: "Text für Maker's Blog Link"
+
+header_forum_text:
+  type: string
+  default: "Forum"
+  description:
+    en: "Text for Forum link"
+    de: "Text für Forum Link"
+
+header_getting_started_text:
+  type: string
+  default: "Getting started"
+  description:
+    en: "Text for Getting Started button"
+    de: "Text für Getting Started Button"
+
+# Footer Settings
+footer_legal_url:
+  type: string
+  default: "https://www.plcnext-community.net/legalinformation/"
+  description:
+    en: "URL for Legal Information"
+    de: "URL für Legal Information"
+
+footer_site_notice_url:
+  type: string
+  default: "https://www.phoenixcontact.com/en-pc/site-notice"
+  description:
+    en: "URL for Site Notice"
+    de: "URL für Site Notice"
+
+footer_privacy_url:
+  type: string
+  default: "https://www.phoenixcontact.com/en-pc/legal-information/data-privacy"
+  description:
+    en: "URL for Data Privacy"
+    de: "URL für Data Privacy"
+
+footer_phoenix_url:
+  type: string
+  default: "https://www.phoenixcontact.com/en-pc/"
+  description:
+    en: "URL for Phoenix Contact"
+    de: "URL für Phoenix Contact"
+
+footer_legal_text:
+  type: string
+  default: "Legal information"
+  description:
+    en: "Text for Legal Information link"
+    de: "Text für Legal Information Link"
+
+footer_site_notice_text:
+  type: string
+  default: "Site notice"
+  description:
+    en: "Text for Site Notice link"
+    de: "Text für Site Notice Link"
+
+footer_privacy_text:
+  type: string
+  default: "Data privacy"
+  description:
+    en: "Text for Data Privacy link"
+    de: "Text für Data Privacy Link"
