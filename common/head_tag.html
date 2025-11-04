@@ -140,61 +140,20 @@ function insertPLCNextFooter() {
     const existingFooter = document.querySelector('#plcnext-footer');
     if (existingFooter) existingFooter.remove();
 
-    // Add PLCNext footer
+    // Add PLCNext footer to the end of main content
     const template = document.getElementById('plcnext-footer-template');
     if (!template) return;
 
     const footerContent = template.content.cloneNode(true);
-    document.body.appendChild(footerContent);
 
-    // Initialize scroll behavior
-    initializeFooterScrollBehavior();
+    // Find the main content area or append to body
+    const mainOutlet = document.getElementById('main-outlet') ||
+                     document.querySelector('.ember-application') ||
+                     document.body;
+
+    mainOutlet.appendChild(footerContent);
 }
 
-function initializeFooterScrollBehavior() {
-    let lastScrollTop = 0;
-    let scrollDirection = '';
-    const footer = document.getElementById('plcnext-footer');
-
-    if (!footer) return;
-
-    // Initially hide footer
-    footer.classList.add('hidden');
-
-    function handleScroll() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollTop > lastScrollTop) {
-            // Scrolling down
-            if (scrollDirection !== 'down') {
-                scrollDirection = 'down';
-                footer.classList.remove('hidden');
-                footer.classList.add('visible');
-            }
-        } else {
-            // Scrolling up
-            if (scrollDirection !== 'up') {
-                scrollDirection = 'up';
-                footer.classList.remove('visible');
-                footer.classList.add('hidden');
-            }
-        }
-
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    }
-
-    // Throttle scroll events for better performance
-    let ticking = false;
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(handleScroll);
-            ticking = true;
-            setTimeout(() => { ticking = false; }, 100);
-        }
-    }
-
-    window.addEventListener('scroll', requestTick);
-}
 
 function initializePLCNextHeader() {
     // Since we're now using the original Discourse header, we don't need custom functionality
