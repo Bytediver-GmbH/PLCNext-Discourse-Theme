@@ -140,18 +140,14 @@ function insertPLCNextFooter() {
     const existingFooter = document.querySelector('#plcnext-footer');
     if (existingFooter) existingFooter.remove();
 
-    // Add PLCNext footer to the end of main content
+    // Add PLCNext footer at the very end of the page, outside of Discourse containers
     const template = document.getElementById('plcnext-footer-template');
     if (!template) return;
 
     const footerContent = template.content.cloneNode(true);
 
-    // Find the main content area or append to body
-    const mainOutlet = document.getElementById('main-outlet') ||
-                     document.querySelector('.ember-application') ||
-                     document.body;
-
-    mainOutlet.appendChild(footerContent);
+    // Insert footer at the very end of the body, after all Discourse content
+    document.body.appendChild(footerContent);
 }
 
 
