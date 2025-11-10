@@ -153,18 +153,14 @@
 
 /* PLCNext Footer */
 .plcnext-footer {
-  position: sticky;
+  position: fixed;
   bottom: 0;
-  width: 100vw;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  left: 0;
+  width: 100%;
   background: var(--color-white);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
   font-family: var(--font-primary), sans-serif;
-  margin-top: auto;
   z-index: 100;
 
   .footer-container {
