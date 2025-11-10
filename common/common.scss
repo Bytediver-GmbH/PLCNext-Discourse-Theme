@@ -153,7 +153,8 @@
 
 /* PLCNext Footer */
 .plcnext-footer {
-  position: relative;
+  position: sticky;
+  bottom: 0;
   width: 100vw;
   left: 50%;
   right: 50%;
@@ -163,8 +164,8 @@
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
   font-family: var(--font-primary), sans-serif;
-  margin-top: 40px;
-  z-index: 1;
+  margin-top: auto;
+  z-index: 100;
 
   .footer-container {
     max-width: 1382px;
@@ -237,4 +238,5 @@
 /* Ensure body can handle full-width footer */
 body {
   overflow-x: hidden;
+  padding-bottom: 80px; /* Space for sticky footer */
 }
