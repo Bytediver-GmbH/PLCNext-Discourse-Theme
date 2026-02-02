@@ -79,7 +79,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <a href="https://www.plcnext-community.net/legalinformation/" class="footer-link">Legal information</a>
         <a href="https://www.phoenixcontact.com/en-pc/site-notice" class="footer-link">Site notice</a>
         <a href="https://www.phoenixcontact.com/en-pc/legal-information/data-privacy" class="footer-link">Data privacy</a>
-        <a href="#" onclick="event.preventDefault(); UC_UI.showSecondLayer(); return false;" class="footer-link">Privacy Settings</a>
+        <a href="#" id="uc-privacy-settings" class="footer-link">Privacy Settings</a>
       </nav>
 	    <div class="footer-logo">
 		    <a href="https://www.phoenixcontact.com/en-pc/">
@@ -192,6 +192,20 @@ function insertPLCNextFooter() {
 
     // Insert footer at the very end of the body, after all Discourse content
     document.body.appendChild(footerContent);
+
+    // Add event listener for Privacy Settings link (CSP-compliant)
+    setTimeout(() => {
+        const privacyLink = document.getElementById('uc-privacy-settings');
+        if (privacyLink) {
+            privacyLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (typeof UC_UI !== 'undefined' && UC_UI.showSecondLayer) {
+                    UC_UI.showSecondLayer();
+                }
+                return false;
+            });
+        }
+    }, 100);
 }
 
 
