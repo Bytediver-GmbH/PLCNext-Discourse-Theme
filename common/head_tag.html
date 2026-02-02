@@ -1,15 +1,26 @@
-<!-- UserCentrics Cookie Consent Management -->
-<link rel="preconnect" href="https://privacy-proxy.usercentrics.eu">
-<link rel="preload" href="https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js" as="script">
+<!-- UserCentrics Cookie Consent Management - Loaded dynamically to comply with CSP -->
+<script>
+(function() {
+  // Add preconnect for performance
+  const preconnect = document.createElement('link');
+  preconnect.rel = 'preconnect';
+  preconnect.href = 'https://privacy-proxy.usercentrics.eu';
+  document.head.appendChild(preconnect);
 
-<script id="usercentrics-cmp"
-        src="https://app.usercentrics.eu/browser-ui/latest/loader.js"
-        data-settings-id="mf6q7MvbSbk-dj"
-        async>
-</script>
+  // Load UserCentrics CMP Loader
+  const ucScript = document.createElement('script');
+  ucScript.id = 'usercentrics-cmp';
+  ucScript.src = 'https://app.usercentrics.eu/browser-ui/latest/loader.js';
+  ucScript.setAttribute('data-settings-id', 'mf6q7MvbSbk-dj');
+  ucScript.async = true;
+  document.head.appendChild(ucScript);
 
-<script type="application/javascript"
-        src="https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js">
+  // Load Smart Data Protector
+  const ucBlockScript = document.createElement('script');
+  ucBlockScript.type = 'application/javascript';
+  ucBlockScript.src = 'https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js';
+  document.head.appendChild(ucBlockScript);
+})();
 </script>
 
 <!-- Page Meta - Must be loaded before GTM -->
