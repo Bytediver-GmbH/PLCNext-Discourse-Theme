@@ -1,25 +1,111 @@
 <!-- UserCentrics Cookie Consent Management - Loaded dynamically to comply with CSP -->
 <script>
 (function() {
+  const UC_DEBUG = true; // Set to false in production
+  const UC_SETTINGS_ID = 'mf6q7MvbSbk-dj';
+
+  function ucLog(msg, data) {
+    if (UC_DEBUG) console.log('[UserCentrics]', msg, data || '');
+  }
+
+  function ucError(msg, error) {
+    console.error('[UserCentrics ERROR]', msg, error || '');
+  }
+
   // Add preconnect for performance
   const preconnect = document.createElement('link');
   preconnect.rel = 'preconnect';
   preconnect.href = 'https://privacy-proxy.usercentrics.eu';
   document.head.appendChild(preconnect);
+  ucLog('Preconnect hinzugefügt');
 
-  // Load UserCentrics CMP Loader
+  // Load UserCentrics CMP Loader with error handling
   const ucScript = document.createElement('script');
   ucScript.id = 'usercentrics-cmp';
   ucScript.src = 'https://app.usercentrics.eu/browser-ui/latest/loader.js';
-  ucScript.setAttribute('data-settings-id', 'mf6q7MvbSbk-dj');
+  ucScript.setAttribute('data-settings-id', UC_SETTINGS_ID);
   ucScript.async = true;
-  document.head.appendChild(ucScript);
 
-  // Load Smart Data Protector
+  ucScript.addEventListener('load', function() {
+    ucLog('CMP Loader erfolgreich geladen');
+
+    // Wait for UC_UI to be available
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds max
+    const checkInterval = setInterval(function() {
+      attempts++;
+
+      if (typeof UC_UI !== 'undefined') {
+        ucLog('✓ UC_UI ist verfügbar', { attempts: attempts, time: attempts * 100 + 'ms' });
+        clearInterval(checkInterval);
+        window.ucReady = true;
+        window.dispatchEvent(new Event('uc-ready'));
+      } else if (attempts >= maxAttempts) {
+        ucError('UC_UI nicht verfügbar nach ' + (maxAttempts * 100) + 'ms');
+        ucError('Mögliche Ursachen:', {
+          settingsId: UC_SETTINGS_ID,
+          domain: window.location.hostname,
+          hinweis: 'Prüfe ob Domain in UserCentrics Dashboard whitelisted ist'
+        });
+        clearInterval(checkInterval);
+      }
+    }, 100);
+  });
+
+  ucScript.addEventListener('error', function(e) {
+    ucError('CMP Loader konnte nicht geladen werden', e);
+  });
+
+  document.head.appendChild(ucScript);
+  ucLog('CMP Loader Script eingefügt');
+
+  // Load Smart Data Protector after CMP with error handling
   const ucBlockScript = document.createElement('script');
   ucBlockScript.type = 'application/javascript';
   ucBlockScript.src = 'https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js';
+
+  ucBlockScript.addEventListener('load', function() {
+    ucLog('Smart Data Protector erfolgreich geladen');
+  });
+
+  ucBlockScript.addEventListener('error', function(e) {
+    ucError('Smart Data Protector konnte nicht geladen werden', e);
+  });
+
   document.head.appendChild(ucBlockScript);
+  ucLog('Smart Data Protector Script eingefügt');
+
+  // Settings validation (async)
+  fetch('https://app.usercentrics.eu/latest/' + UC_SETTINGS_ID + '/settings.json')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(settings) {
+      ucLog('✓ Settings erfolgreich geladen');
+      ucLog('Konfigurierte Domains:', settings.domains || 'Keine Einschränkung');
+
+      // Check if current domain is whitelisted
+      if (settings.domains && settings.domains.length > 0) {
+        const currentDomain = window.location.hostname;
+        const isWhitelisted = settings.domains.some(function(d) {
+          return currentDomain === d || currentDomain.endsWith('.' + d);
+        });
+
+        if (!isWhitelisted) {
+          ucError('⚠ DOMAIN NICHT WHITELISTED!', {
+            aktuelle: currentDomain,
+            erlaubte: settings.domains,
+            aktion: 'Domain in UserCentrics Dashboard hinzufügen!'
+          });
+        } else {
+          ucLog('✓ Domain ist whitelisted');
+        }
+      }
+    })
+    .catch(function(e) {
+      ucError('Settings konnten nicht geladen werden', e);
+    });
 })();
 </script>
 
@@ -194,18 +280,42 @@ function insertPLCNextFooter() {
     document.body.appendChild(footerContent);
 
     // Add event listener for Privacy Settings link (CSP-compliant)
-    setTimeout(() => {
+    // Wait for UserCentrics to be ready
+    function setupPrivacyLink() {
         const privacyLink = document.getElementById('uc-privacy-settings');
-        if (privacyLink) {
-            privacyLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (typeof UC_UI !== 'undefined' && UC_UI.showSecondLayer) {
+        if (!privacyLink) return;
+
+        privacyLink.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (typeof UC_UI !== 'undefined' && UC_UI.showSecondLayer) {
+                if (window.ucReady || typeof UC_UI !== 'undefined') {
+                    console.log('[UserCentrics] Privacy Settings öffnen');
                     UC_UI.showSecondLayer();
+                } else {
+                    console.warn('[UserCentrics] UC_UI noch nicht bereit, warte...');
+                    // Wait for UC to be ready
+                    window.addEventListener('uc-ready', function() {
+                        UC_UI.showSecondLayer();
+                    }, { once: true });
                 }
-                return false;
-            });
-        }
-    }, 100);
+            } else {
+                console.error('[UserCentrics] UC_UI.showSecondLayer nicht verfügbar!');
+                alert('Cookie-Einstellungen können nicht geladen werden. Bitte Seite neu laden.');
+            }
+            return false;
+        });
+        console.log('[UserCentrics] Privacy Settings Link registriert');
+    }
+
+    // Setup immediately if UC is ready, otherwise wait
+    if (window.ucReady) {
+        setupPrivacyLink();
+    } else {
+        window.addEventListener('uc-ready', setupPrivacyLink, { once: true });
+        // Fallback: Setup anyway after 2 seconds
+        setTimeout(setupPrivacyLink, 2000);
+    }
 }
 
 
