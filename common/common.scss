@@ -28,6 +28,10 @@
   top: 0 !important;
   z-index: 1000 !important;
 
+  .title {
+    flex-shrink: 0;
+  }
+
   // Force PLCNext logo styles
   .logo-mobile img,
   .title img,
@@ -47,7 +51,7 @@
   // Style PLCNext navigation when inserted
   .plcnext-navigation {
     flex: 1;
-    margin-left: 40px;
+    margin-left: 32px;
     display: block !important;
 
     @media (max-width: 991.98px) {
@@ -63,7 +67,7 @@
       padding: 0;
 
       @media (min-width: 992px) {
-        gap: 16px;
+        gap: 0;
       }
     }
 
